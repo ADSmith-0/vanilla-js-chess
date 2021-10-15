@@ -1,0 +1,27 @@
+#chessboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 50%;
+}
+.row, .alt-row {
+    display: flex;
+    flex-direction: row;
+}
+.row .tile:nth-child(odd),
+.alt-row .tile:nth-child(even) {
+    background-color: #999;
+}
+.tile {
+    height: 90px;
+    width: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.row .tile:nth-child(even),
+.alt-row .tile:nth-child(odd) {
+    background-color: #eee;
+}

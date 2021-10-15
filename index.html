@@ -5,8 +5,155 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess</title>
+    <link rel="preload" href="/styles/index.css" as="style">
+    <link rel="stylesheet" href="/styles/index.css">
 </head>
 <body>
-    
+    <main id="chessboard">
+        <section id="8" class="alt-row">
+            <div class="H tile">
+                <img src="/img/br-s.png" height="80" width="80" alt="Black Rook">
+            </div>
+            <div class="G tile">
+                <img src="/img/bn-s.png" height="80" width="80" alt="Black Knight">
+            </div>
+            <div class="F tile">
+                <img src="/img/bb-s.png" height="80" width="80" alt="Black Bishop">
+            </div>
+            <div class="E tile">
+                <img src="/img/bq-s.png" height="80" width="80" alt="Black Queen">
+            </div>
+            <div class="D tile">
+                <img src="/img/bk-s.png" height="80" width="80" alt="Black King">
+            </div>
+            <div class="C tile">
+                <img src="/img/bb-s.png" height="80" width="80" alt="Black Bishop">
+            </div>
+            <div class="B tile">
+                <img src="/img/bn-s.png" height="80" width="80" alt="Black Knight">
+            </div>
+            <div class="A tile">
+                <img src="/img/br-s.png" height="80" width="80" alt="Black Rook">
+            </div>
+        </section>
+        <section id="7" class="row">
+            <div class="H tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+            <div class="G tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+            <div class="F tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+            <div class="E tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+            <div class="D tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+            <div class="C tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+            <div class="B tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+            <div class="A tile">
+                <img src="/img/bp-s.png" height="80" width="80" alt="Black Pawn">
+            </div>
+        </section>
+        <section id="6" class="alt-row">
+            <div class="H tile"></div>
+            <div class="G tile"></div>
+            <div class="F tile"></div>
+            <div class="E tile"></div>
+            <div class="D tile"></div>
+            <div class="C tile"></div>
+            <div class="B tile"></div>
+            <div class="A tile"></div>
+        </section>
+        <section id="5" class="row">
+            <div class="H tile"></div>
+            <div class="G tile"></div>
+            <div class="F tile"></div>
+            <div class="E tile"></div>
+            <div class="D tile"></div>
+            <div class="C tile"></div>
+            <div class="B tile"></div>
+            <div class="A tile"></div>
+        </section>
+        <section id="4" class="alt-row">
+            <div class="H tile"></div>
+            <div class="G tile"></div>
+            <div class="F tile"></div>
+            <div class="E tile"></div>
+            <div class="D tile"></div>
+            <div class="C tile"></div>
+            <div class="B tile"></div>
+            <div class="A tile"></div>
+        </section>
+        <section id="3" class="row">
+            <div class="H tile"></div>
+            <div class="G tile"></div>
+            <div class="F tile"></div>
+            <div class="E tile"></div>
+            <div class="D tile"></div>
+            <div class="C tile"></div>
+            <div class="B tile"></div>
+            <div class="A tile"></div>
+        </section>
+        <section id="2" class="alt-row">
+            <div class="H tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+            <div class="G tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+            <div class="F tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+            <div class="E tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+            <div class="D tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+            <div class="C tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+            <div class="B tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+            <div class="A tile">
+                <img src="/img/wp-s.png" height="80" width="80" alt="White Pawn">
+            </div>
+        </section>
+        <section id="1" class="row">
+            <div class="H tile">
+                <img src="/img/wr-s.png" height="80" width="80" alt="White Rook">
+            </div>
+            <div class="G tile">
+                <img src="/img/wn-s.png" height="80" width="80" alt="White Knight">
+            </div>
+            <div class="F tile">
+                <img src="/img/wb-s.png" height="80" width="80" alt="White Bishop">
+            </div>
+            <div class="E tile">
+                <img src="/img/wq-s.png" height="80" width="80" alt="White Queen">
+            </div>
+            <div class="D tile">
+                <img src="/img/wk-s.png" height="80" width="80" alt="White King">
+            </div>
+            <div class="C tile">
+                <img src="/img/wb-s.png" height="80" width="80" alt="White Bishop">
+            </div>
+            <div class="B tile">
+                <img src="/img/wn-s.png" height="80" width="80" alt="White Knight">
+            </div>
+            <div class="A tile">
+                <img src="/img/wr-s.png" height="80" width="80" alt="White Rook">
+            </div>
+        </section>
+    </main>
 </body>
 </html>
