@@ -21,6 +21,10 @@
     justify-content: center;
     align-items: center;
 }
+.tile img {
+    user-select: none;
+    cursor: grab;
+}
 .row .tile:nth-child(even),
 .alt-row .tile:nth-child(odd) {
     background-color: #eee;
