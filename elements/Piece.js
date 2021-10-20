@@ -13,9 +13,10 @@ class Piece extends HTMLElement {
     }
     _handleDrag(e){
         e.preventDefault();
-        this._grabbedPiece = e.target;
         document.addEventListener('mousemove', this._trackCoords);
         document.addEventListener('mouseup', this._stopDrag);
+        this._currentTile = e.target.parentElement.parentElement;
+        this._grabbedPiece = e.target;
         this._toggleGrabbing();
     }
     _trackCoords(e){
@@ -30,13 +31,22 @@ class Piece extends HTMLElement {
         this._grabbedPiece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
     }
     _stopDrag(e){
-        this._grabbedPiece.style.transform = "translate(0,0)";
-        this._toggleGrabbing();
         document.removeEventListener('mousemove', this._trackCoords);
         document.removeEventListener('mouseup', this._stopDrag);
+        this._grabbedPiece.style.transform = "translate(0,0)";
+        this._toggleGrabbing();
+        const hoveringOverTile = document.elementFromPoint(e.clientX, e.clientY);
+        this._movePiece(hoveringOverTile);
     }
     _toggleGrabbing(){
         this._grabbedPiece.classList.toggle('grabbing');
+    }
+    _movePiece(tile){
+        const currTile = tile.parentElement.parentElement;
+        if(currTile != this._currentTile){
+            if(tile.localName == "img") tile.parentElement.remove();
+            setTimeout(() => tile.appendChild(this._grabbedPiece.parentElement), 0);
+        }
     }
 }
 customElements.define('chess-piece', Piece);

@@ -13,10 +13,6 @@ class Chessboard extends HTMLElement {
         }
         this._init();
     }
-    connectedCallback(){
-        // Array.from(document.querySelectorAll('chess-piece'))
-        // .map(img => img.);
-    }
     _init(){
         for(let i = 8; i >= 1; i--){
             const style = (i%2) ?  "row" : "alt-row";
@@ -35,8 +31,10 @@ class Chessboard extends HTMLElement {
         const tile = document.createElement('div');
         tile.setAttribute('id', xCoord+yCoord.toString());
         tile.setAttribute('class', 'tile');
-        const piece = this._getPieceFromCoordinates(xCoord, yCoord);
-        tile.appendChild(this._createPiece(piece));
+        if(yCoord <= 2 || yCoord >= 7){
+            const piece = this._getPieceFromCoordinates(xCoord, yCoord);
+            tile.appendChild(this._createPiece(piece));
+        }
         return tile;
     }
     _getPieceFromCoordinates(xCoord, yCoord){

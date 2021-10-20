@@ -32,3 +32,8 @@
 .alt-row .tile:nth-child(odd) {
     background-color: #eee;
 }
+chess-piece {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
