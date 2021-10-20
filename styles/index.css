@@ -25,6 +25,9 @@
     user-select: none;
     cursor: grab;
 }
+.tile img.grabbing {
+    cursor: grabbing;
+}
 .row .tile:nth-child(even),
 .alt-row .tile:nth-child(odd) {
     background-color: #eee;

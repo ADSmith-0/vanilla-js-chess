@@ -12,13 +12,10 @@ class Chessboard extends HTMLElement {
             "H": "r",
         }
         this._init();
-        this._handleDrag = this._handleDrag.bind(this);
-        this._trackCoords = this._trackCoords.bind(this);
-        this._stopDrag = this._stopDrag.bind(this);
     }
     connectedCallback(){
-        Array.from(document.querySelectorAll('.tile img'))
-        .map(img => img.addEventListener('mousedown', this._handleDrag));
+        // Array.from(document.querySelectorAll('chess-piece'))
+        // .map(img => img.);
     }
     _init(){
         for(let i = 8; i >= 1; i--){
@@ -56,31 +53,9 @@ class Chessboard extends HTMLElement {
         return null;
     }
     _createPiece(pieceCode){
-        const piece = document.createElement('img');
-        if(pieceCode) piece.setAttribute('src', `./img/${pieceCode}-s.png`);
+        const piece = document.createElement('chess-piece');
+        if(pieceCode) piece.setAttribute('type', pieceCode);
         return piece;
-    }
-    _handleDrag(e){
-        e.preventDefault();
-        const piece = e.target;
-        document.addEventListener('mousemove', (event) => this._trackCoords(event, piece));
-        document.addEventListener('mouseup', this._stopDrag);
-    }
-    _trackCoords(e, piece){
-        console.log(e.clientX, " ", e.clientY);
-        const { 
-            offsetLeft: pieceX,
-            offsetTop: pieceY,
-            offsetWidth: pieceWidth,
-            offsetHeight: pieceHeight
-        } = piece;
-        const deltaX = e.clientX - (pieceX + pieceWidth/2);
-        const deltaY = e.clientY - (pieceY + pieceHeight/2);
-        piece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-    }
-    _stopDrag(e){
-        document.removeEventListener('mousemove', (event) => this._trackCoords(event, piece));
-        document.removeEventListener('mouseup', this._stopDrag);
     }
 }
 
