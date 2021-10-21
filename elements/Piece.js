@@ -3,19 +3,19 @@ class Piece extends HTMLElement {
         super();
         this._type = this.getAttribute('type') ?? "";
 
-        this.innerHTML = (this._type) ? 
-        `<img src="./img/${this._type}-s.png">` :
-        "";
         this._handleDrag = this._handleDrag.bind(this);
         this._trackCoords = this._trackCoords.bind(this);
         this._stopDrag = this._stopDrag.bind(this);
         this.addEventListener('mousedown', this._handleDrag);
     }
+    connectedCallback(){
+        this.style.backgroundImage = `url('./img/${this._type}-s.png')`;
+    }
     _handleDrag(e){
         e.preventDefault();
         document.addEventListener('mousemove', this._trackCoords);
         document.addEventListener('mouseup', this._stopDrag);
-        this._currentTile = e.target.parentElement.parentElement;
+        this._currentTile = e.target.parentElement;
         this._grabbedPiece = e.target;
         this._toggleGrabbing();
     }
@@ -35,18 +35,20 @@ class Piece extends HTMLElement {
         document.removeEventListener('mouseup', this._stopDrag);
         this._grabbedPiece.style.transform = "translate(0,0)";
         this._toggleGrabbing();
-        const hoveringOverTile = document.elementFromPoint(e.clientX, e.clientY);
+        const hoveringOverTile = this._cleanTile(document.elementFromPoint(e.clientX, e.clientY));
         this._movePiece(hoveringOverTile);
     }
     _toggleGrabbing(){
         this._grabbedPiece.classList.toggle('grabbing');
     }
     _movePiece(tile){
-        const currTile = tile.parentElement.parentElement;
-        if(currTile != this._currentTile){
-            if(tile.localName == "img") tile.parentElement.remove();
-            setTimeout(() => tile.appendChild(this._grabbedPiece.parentElement), 0);
+        if(tile.id != this._currentTile){
+            if(tile.firstElementChild) tile.firstElementChild.remove();
+            tile.appendChild(this._grabbedPiece);
         }
+    }
+    _cleanTile(tile){
+        return (tile.localName == "chess-piece") ? tile.parentElement : tile;
     }
 }
 customElements.define('chess-piece', Piece);

@@ -21,11 +21,14 @@
     justify-content: center;
     align-items: center;
 }
-.tile img {
+chess-piece {
     user-select: none;
     cursor: grab;
+    height: 80px;
+    width: 80px;
+    background-size: 80px 80px;
 }
-.tile img.grabbing {
+chess-piece.grabbing {
     cursor: grabbing;
 }
 .row .tile:nth-child(even),
