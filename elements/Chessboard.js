@@ -51,8 +51,14 @@ class Chessboard extends HTMLElement {
         return null;
     }
     _createPiece(pieceCode){
-        const piece = document.createElement('chess-piece');
-        if(pieceCode) piece.setAttribute('type', pieceCode);
+        let piece;
+        if(pieceCode == "wp"){
+            piece = document.createElement('pawn-x');
+            piece.classList.add('w');
+        }else{
+            piece = document.createElement('chess-piece');
+            if(pieceCode) piece.setAttribute('type', pieceCode);
+        }
         return piece;
     }
 }

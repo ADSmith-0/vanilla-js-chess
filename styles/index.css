@@ -21,14 +21,14 @@
     justify-content: center;
     align-items: center;
 }
-chess-piece {
+chess-piece, pawn-x {
     user-select: none;
     cursor: grab;
     height: 80px;
     width: 80px;
     background-size: 80px 80px;
 }
-chess-piece.grabbing {
+chess-piece.grabbing, pawn-x.grabbing {
     cursor: grabbing;
 }
 .row .tile:nth-child(even),
@@ -40,3 +40,15 @@ chess-piece {
     justify-content: center;
     align-items: center;
 }
+pawn-x.w { background-image: url('/img/wp-s.png'); }
+pawn-x.b { background-image: url('/img/bp-s.png'); }
+rook-x.w { background-image: url('/img/wr-s.png'); }
+rook-x.b { background-image: url('/img/br-s.png'); }
+knight-x.w { background-image: url('/img/wn-s.png'); }
+knight-x.b { background-image: url('/img/bn-s.png'); }
+bishop-x.w { background-image: url('/img/wb-s.png'); }
+bishop-x.b { background-image: url('/img/bb-s.png'); }
+queen-x.w { background-image: url('/img/wq-s.png'); }
+queen-x.b { background-image: url('/img/bq-s.png'); }
+king-x.w { background-image: url('/img/wk-s.png'); }
+king-x.b { background-image: url('/img/bk-s.png'); }

@@ -1,4 +1,4 @@
-class Rook extends Piece {
+class Knight extends Piece {
     constructor(){
         super();
     }
@@ -6,4 +6,4 @@ class Rook extends Piece {
         return true;
     }
 }
-customElements.define('rook-x', Rook);
+customElements.define('knight-x', Knight);
