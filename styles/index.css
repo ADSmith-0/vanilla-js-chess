@@ -21,34 +21,32 @@
     justify-content: center;
     align-items: center;
 }
-chess-piece, pawn-x {
+.chess-piece {
     user-select: none;
     cursor: grab;
     height: 80px;
     width: 80px;
     background-size: 80px 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-chess-piece.grabbing, pawn-x.grabbing {
+.chess-piece.grabbing {
     cursor: grabbing;
 }
 .row .tile:nth-child(even),
 .alt-row .tile:nth-child(odd) {
     background-color: #eee;
 }
-chess-piece {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-pawn-x.w { background-image: url('/img/wp-s.png'); }
-pawn-x.b { background-image: url('/img/bp-s.png'); }
-rook-x.w { background-image: url('/img/wr-s.png'); }
-rook-x.b { background-image: url('/img/br-s.png'); }
-knight-x.w { background-image: url('/img/wn-s.png'); }
-knight-x.b { background-image: url('/img/bn-s.png'); }
-bishop-x.w { background-image: url('/img/wb-s.png'); }
-bishop-x.b { background-image: url('/img/bb-s.png'); }
-queen-x.w { background-image: url('/img/wq-s.png'); }
-queen-x.b { background-image: url('/img/bq-s.png'); }
-king-x.w { background-image: url('/img/wk-s.png'); }
-king-x.b { background-image: url('/img/bk-s.png'); }
+pawn-x.w.s { background-image: url('/img/wp-s.png'); }
+pawn-x.b.s { background-image: url('/img/bp-s.png'); }
+rook-x.w.s { background-image: url('/img/wr-s.png'); }
+rook-x.b.s { background-image: url('/img/br-s.png'); }
+knight-x.w.s { background-image: url('/img/wn-s.png'); }
+knight-x.b.s { background-image: url('/img/bn-s.png'); }
+bishop-x.w.s { background-image: url('/img/wb-s.png'); }
+bishop-x.b.s { background-image: url('/img/bb-s.png'); }
+queen-x.w.s { background-image: url('/img/wq-s.png'); }
+queen-x.b.s { background-image: url('/img/bq-s.png'); }
+king-x.w.s { background-image: url('/img/wk-s.png'); }
+king-x.b.s { background-image: url('/img/bk-s.png'); }

@@ -1,14 +1,11 @@
 class Piece extends HTMLElement {
     constructor(){
         super();
-        this._colour = this.getAttribute('colour') ?? "";
-        // this._type = this.getAttribute('type') ?? "";
-
+        
         this._handleDrag = this._handleDrag.bind(this);
         this._trackCoords = this._trackCoords.bind(this);
         this._stopDrag = this._stopDrag.bind(this);
         this.addEventListener('mousedown', this._handleDrag);
-        // this.style.backgroundImage = `url('./img/${this._colour}${this._type}-s.png')`;
     }
     _handleDrag(e){
         e.preventDefault();

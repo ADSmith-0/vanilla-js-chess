@@ -1,15 +1,16 @@
 class Chessboard extends HTMLElement {
     constructor(){
         super();
+        this._pieceSize = "s";
         this._backRow = {
-            "A": "r",
-            "B": "n",
-            "C": "b",
-            "D": "q",
-            "E": "k",
-            "F": "b",
-            "G": "n",
-            "H": "r",
+            "A": "rook",
+            "B": "knight",
+            "C": "bishop",
+            "D": "queen",
+            "E": "king",
+            "F": "bishop",
+            "G": "knight",
+            "H": "rook",
         }
         this._init();
     }
@@ -39,26 +40,21 @@ class Chessboard extends HTMLElement {
     }
     _getPieceFromCoordinates(xCoord, yCoord){
         if(yCoord == 7){
-            return "bp";
+            return ["b", "pawn"];
         }else if(yCoord == 2){
-            return "wp";
+            return ["w", "pawn"];
         }else if(yCoord == 1 || yCoord == 8){
-            let piece = "";
-            piece += (yCoord == 1) ? "w" : "b";
-            piece += this._backRow[xCoord];
+            let piece = [];
+            piece.push((yCoord == 1) ? "w" : "b");
+            piece.push(this._backRow[xCoord]);
             return piece;
         }
         return null;
     }
     _createPiece(pieceCode){
         let piece;
-        if(pieceCode == "wp"){
-            piece = document.createElement('pawn-x');
-            piece.classList.add('w');
-        }else{
-            piece = document.createElement('chess-piece');
-            if(pieceCode) piece.setAttribute('type', pieceCode);
-        }
+        piece = document.createElement(`${pieceCode[1]}-x`);
+        piece.setAttribute('class', `chess-piece ${pieceCode[0]} ${this._pieceSize}`);
         return piece;
     }
 }
