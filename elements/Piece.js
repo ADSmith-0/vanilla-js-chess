@@ -2,10 +2,12 @@ class Piece extends HTMLElement {
     constructor(){
         super();
 
+        this._colour = this.classList.contains("b") ? "b" : "w";
+        this._forward = (this._colour == "b") ? -1 : 1;
         this._firstMove = true;
         this._currentTile = this.parentElement.id;
         this._x = this._currentTile[0];
-        this._y = this._currentTile[1];
+        this._y = parseInt(this._currentTile[1]);
         
         this._handleDrag = this._handleDrag.bind(this);
         this._trackCoords = this._trackCoords.bind(this);
@@ -13,6 +15,9 @@ class Piece extends HTMLElement {
         this._moveIsValid = this._moveIsValid.bind(this);
         this._updateLocation = this._updateLocation.bind(this);
         this._calculateValidSpaces = this._calculateValidSpaces.bind(this);
+        this._canCapture = this._canCapture.bind(this);
+        this._getOppositeColour = this._getOppositeColour.bind(this);
+        this._addToLetter = this._addToLetter.bind(this);
 
         this._validSpaces = this._calculateValidSpaces();
 
@@ -58,7 +63,7 @@ class Piece extends HTMLElement {
     _updateLocation(){
         this._currentTile = this._hoveringOverTile.id;
         this._x = this._currentTile[0];
-        this._y = this._currentTile[1];
+        this._y = parseInt(this._currentTile[1]);
         this._validSpaces = this._calculateValidSpaces();
     }
     _cleanTile(tile){
@@ -70,11 +75,34 @@ class Piece extends HTMLElement {
     _calculateValidSpaces(){
         return [];
     }
+    _isOccupied(id){
+        return ((document.getElementById(id).firstElementChild) ? !!document.getElementById(id).firstElementChild.classList.contains(this._colour) : false);
+    }
+    _canCapture(id){
+        const tile = document.getElementById(id);
+        const colour = this._getOppositeColour();
+        return ((tile.firstElementChild) && !!tile.firstElementChild.classList.contains(colour));
+    }
+    _getOppositeColour(){
+        return ((this._colour == "w") ? "b" : "w");
+    }
     _numberFromLetter(letter){
         return (letter.charCodeAt(0)-64);
     }
     _letterFromNumber(number){
         return String.fromCharCode(number+64);
+    }
+    _addToLetter(letter, number){
+        return this._letterFromNumber(this._numberFromLetter(letter)+number);
+    }
+    _getID(x, y){
+        return x+y.toString();
+    }
+    _checkXBoundary(x, number){
+        return !((x == "A" && number < 0) || (x == "H" && number > 0));
+    }
+    _checkYBoundary(y, number){
+        return !((y == 1 && number < 0) || (y == 8 && number > 0));
     }
 }
 customElements.define('chess-piece', Piece);
