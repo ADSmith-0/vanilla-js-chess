@@ -15,6 +15,8 @@ class Piece extends HTMLElement {
         this._moveIsValid = this._moveIsValid.bind(this);
         this._updateLocation = this._updateLocation.bind(this);
         this._calculateValidSpaces = this._calculateValidSpaces.bind(this);
+        this._isOccupied = this._isOccupied.bind(this);
+        this._isOccupiedBySameColour = this._isOccupiedBySameColour.bind(this);
         this._canCapture = this._canCapture.bind(this);
         this._getOppositeColour = this._getOppositeColour.bind(this);
         this._addToLetter = this._addToLetter.bind(this);
@@ -54,7 +56,7 @@ class Piece extends HTMLElement {
     }
     _movePiece(tile){
         if(tile.id != this._currentTile && this._moveIsValid()){
-            if(tile.firstElementChild) tile.firstElementChild.remove();
+            if(this._canCapture(tile.id)) this._capturePiece(tile);
             tile.appendChild(this._grabbedPiece);
             if(this._firstMove) this._firstMove = false;
             this._updateLocation();
@@ -67,7 +69,7 @@ class Piece extends HTMLElement {
         this._validSpaces = this._calculateValidSpaces();
     }
     _cleanTile(tile){
-        return (tile.localName == "chess-piece") ? tile.parentElement : tile;
+        return (tile.localName != "div") ? tile.parentElement : tile;
     }
     _moveIsValid(){
         return this._calculateValidSpaces();
@@ -76,12 +78,18 @@ class Piece extends HTMLElement {
         return [];
     }
     _isOccupied(id){
-        return ((document.getElementById(id).firstElementChild) ? !!document.getElementById(id).firstElementChild.classList.contains(this._colour) : false);
+        return (document.getElementById(id).firstElementChild !== null);
+    }
+    _isOccupiedBySameColour(id){
+        return ((document.getElementById(id).firstElementChild) ? document.getElementById(id).firstElementChild.classList.contains(this._colour) : false);
     }
     _canCapture(id){
         const tile = document.getElementById(id);
         const colour = this._getOppositeColour();
-        return ((tile.firstElementChild) && !!tile.firstElementChild.classList.contains(colour));
+        return ((tile.firstElementChild !== null) && tile.firstElementChild.classList.contains(colour));
+    }
+    _capturePiece(tile){
+        tile.firstElementChild.remove();
     }
     _getOppositeColour(){
         return ((this._colour == "w") ? "b" : "w");
@@ -98,10 +106,10 @@ class Piece extends HTMLElement {
     _getID(x, y){
         return x+y.toString();
     }
-    _checkXBoundary(x, number){
+    _withinXBoundary(x, number){
         return !((x == "A" && number < 0) || (x == "H" && number > 0));
     }
-    _checkYBoundary(y, number){
+    _withinYBoundary(y, number){
         return !((y == 1 && number < 0) || (y == 8 && number > 0));
     }
 }
