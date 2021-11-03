@@ -3,17 +3,14 @@ class Rook extends Piece {
         super();
     }
     _calculatePossibleMoves(){
-        const moves = [
+        const directions = [
             [0,1],
             [1,0],
             [0,-1],
             [-1,0]
         ];
 
-        return moves.map(move => {
-            const [x, y] = move;
-            return [1,2,3,4,5,6,7,8].map(coeff => [x*coeff, y*coeff])
-        }).reduce((acc, val) => [...acc, ...val], []);
+        return this._allMovesFromDirections(directions);
     }
 }
 customElements.define('rook-x', Rook);

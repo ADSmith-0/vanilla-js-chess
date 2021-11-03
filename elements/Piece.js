@@ -133,5 +133,11 @@ class Piece extends HTMLElement {
         const diffY = y+number;
         return (1 <= diffY && diffY <= 8);
     }
+    _allMovesFromDirections(directions){
+        return directions.map(direction => {
+            const [x, y] = direction;
+            return [1,2,3,4,5,6,7,8].map(coeff => [x*coeff, y*coeff])
+        }).reduce((acc, val) => [...acc, ...val], []);
+    }
 }
 customElements.define('chess-piece', Piece);
