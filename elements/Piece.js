@@ -72,7 +72,9 @@ class Piece extends HTMLElement {
         return (tile.localName != "div") ? tile.parentElement : tile;
     }
     _moveIsValid(){
-        return this._calculateValidSpaces();
+        console.log(this._validSpaces);
+        const { length:moveIsValid } = this._validSpaces.filter(space => space === this._hoveringOverTile.id);
+        return moveIsValid;
     }
     _calculateValidSpaces(){
         return [];
@@ -107,10 +109,13 @@ class Piece extends HTMLElement {
         return x+y.toString();
     }
     _withinXBoundary(x, number){
-        return !((x == "A" && number < 0) || (x == "H" && number > 0));
+        const asciiCode = this._numberFromLetter(x);
+        const diffX = asciiCode+number;
+        return (1 <= diffX && diffX <= 8);
     }
     _withinYBoundary(y, number){
-        return !((y == 1 && number < 0) || (y == 8 && number > 0));
+        const diffY = y+number;
+        return (1 <= diffY && diffY <= 8);
     }
 }
 customElements.define('chess-piece', Piece);

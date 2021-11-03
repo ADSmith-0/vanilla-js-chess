@@ -1,24 +1,8 @@
 class Pawn extends Piece {
     constructor(){
         super();
-
-        this._getMoves = this._getMoves.bind(this);
-        // this._getPotentialCaptures = this._getPotentialCaptures.bind(this);
-
-    }
-    _moveIsValid(){
-        // console.log(this._validSpaces);
-        const arr = this._validSpaces.filter(space => space === this._hoveringOverTile.id);
-        return arr.length;
     }
     _calculateValidSpaces(){
-        const moves = this._getMoves();
-        // const captures = this._getPotentialCaptures();
-        // return [...moves, ...captures];
-        // console.log(moves);
-        return moves;
-    }
-    _getMoves(){
         const potentialY = [1];
         const potentialX = [-1,1];
         if(this._firstMove) potentialY.push(2);
