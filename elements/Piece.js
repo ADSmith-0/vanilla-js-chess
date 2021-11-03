@@ -15,15 +15,21 @@ class Piece extends HTMLElement {
         this._moveIsValid = this._moveIsValid.bind(this);
         this._updateLocation = this._updateLocation.bind(this);
         this._calculateValidSpaces = this._calculateValidSpaces.bind(this);
+        this._calculatePossibleMoves = this._calculatePossibleMoves.bind(this);
         this._isOccupied = this._isOccupied.bind(this);
         this._isOccupiedBySameColour = this._isOccupiedBySameColour.bind(this);
         this._canCapture = this._canCapture.bind(this);
         this._getOppositeColour = this._getOppositeColour.bind(this);
         this._addToLetter = this._addToLetter.bind(this);
 
-        this._validSpaces = this._calculateValidSpaces();
+        this._possibleMoves = [];
+
+        this._possibleMoves = this._calculatePossibleMoves();
 
         this.addEventListener('mousedown', this._handleDrag);
+    }
+    connectedCallback(){
+        this._validSpaces = this._calculateValidSpaces();
     }
     _handleDrag(e){
         e.preventDefault();
@@ -46,7 +52,7 @@ class Piece extends HTMLElement {
     _stopDrag(e){
         document.removeEventListener('mousemove', this._trackCoords);
         document.removeEventListener('mouseup', this._stopDrag);
-        this._grabbedPiece.style.transform = "translate(0,0)";
+        this._grabbedPiece.style.transform = "none";
         this._toggleGrabbing();
         this._hoveringOverTile = this._cleanTile(document.elementFromPoint(e.clientX, e.clientY));
         this._movePiece(this._hoveringOverTile);
@@ -77,6 +83,16 @@ class Piece extends HTMLElement {
         return moveIsValid;
     }
     _calculateValidSpaces(){
+        return this._possibleMoves.map(move => {
+            const [x, y] = move;
+            if(this._withinXBoundary(this._x, x) && this._withinYBoundary(this._y, y)){
+                const newTileID = this._getID(this._addToLetter(this._x, x), this._y+y)
+                if(!this._isOccupiedBySameColour(newTileID)) return newTileID;
+            }
+        })
+        .filter(Boolean);
+    }
+    _calculatePossibleMoves(){
         return [];
     }
     _isOccupied(id){

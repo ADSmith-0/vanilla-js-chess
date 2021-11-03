@@ -2,8 +2,8 @@ class Knight extends Piece {
     constructor(){
         super();
     }
-    _calculateValidSpaces(){
-        const possibleMoves = [
+    _calculatePossibleMoves(){
+        return [
             [1, 2],
             [-1, 2],
             [2, 1],
@@ -13,14 +13,6 @@ class Knight extends Piece {
             [-2, -1],
             [-2, 1]
         ];
-        return possibleMoves.map(move => {
-            const [x, y] = move;
-            if(this._withinXBoundary(this._x, x) && this._withinYBoundary(this._y, y)){
-                const newTileID = this._getID(this._addToLetter(this._x, x), this._y+y)
-                if(!this._isOccupiedBySameColour(newTileID)) return newTileID;
-            }
-        })
-        .filter(Boolean);
     }
 }
 customElements.define('knight-x', Knight);
