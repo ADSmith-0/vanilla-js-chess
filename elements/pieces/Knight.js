@@ -19,7 +19,8 @@ class Knight extends Piece {
                 const newTileID = this._getID(this._addToLetter(this._x, x), this._y+y)
                 if(!this._isOccupiedBySameColour(newTileID)) return newTileID;
             }
-        }).filter(Boolean).reduce((acc, val) => [...acc, ...val], []);
+        })
+        .filter(Boolean);
     }
 }
 customElements.define('knight-x', Knight);
