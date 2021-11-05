@@ -78,7 +78,7 @@ class Piece extends HTMLElement {
     }
     
     _moveIsValid(){
-        console.log(this._validSpaces);
+        // console.log(this._validSpaces);
         const { length:moveIsValid } = this._validSpaces.filter(space => space === this._hoveringOverTile.id);
         return moveIsValid;
     }
@@ -97,7 +97,6 @@ class Piece extends HTMLElement {
     _canCapture(id){
         const tile = document.getElementById(id);
         const colour = Util.getOppositeColour(this._colour);
-        console.log(colour);
         return ((tile.firstElementChild !== null) && tile.firstElementChild.classList.contains(colour));
     }
     _getTileFromId(id){
@@ -111,6 +110,9 @@ class Piece extends HTMLElement {
                 const tileId = Util.coordsToId(Util.addToLetter(this._x, (x*coeff)), this._y+(y*coeff));
                 if(Tile.isValid(tileId)){
                     moves.push([x*coeff, y*coeff]);
+                    if(Tile.isOccupiedByColour(tileId, Util.getOppositeColour(this._colour))){
+                        break;
+                    }
                 }else{
                     break;
                 }
