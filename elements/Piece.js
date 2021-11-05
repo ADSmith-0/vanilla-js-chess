@@ -17,7 +17,6 @@ class Piece extends HTMLElement {
         this._updateLocation = this._updateLocation.bind(this);
         this._calculateValidSpaces = this._calculateValidSpaces.bind(this);
         this._calculatePossibleMoves = this._calculatePossibleMoves.bind(this);
-        this._isOccupiedBySameColour = this._isOccupiedBySameColour.bind(this);
         this._canCapture = this._canCapture.bind(this);
         this._allMovesFromDirections = this._allMovesFromDirections.bind(this);
 
@@ -88,19 +87,17 @@ class Piece extends HTMLElement {
             const [x, y] = move;
             if(Tile.withinXBoundary(this._x, x) && Tile.withinYBoundary(this._y, y)){
                 const newTileID = Util.coordsToId(Util.addToLetter(this._x, x), this._y+y)
-                if(!this._isOccupiedBySameColour(newTileID)) return newTileID;
+                if(!Tile.isOccupiedByColour(newTileID, this._colour)) return newTileID;
             }
         }).filter(Boolean);
     }
     _calculatePossibleMoves(){
         return [];
     }
-    _isOccupiedBySameColour(id){
-        return ((document.getElementById(id).firstElementChild) ? document.getElementById(id).firstElementChild.classList.contains(this._colour) : false);
-    }
     _canCapture(id){
         const tile = document.getElementById(id);
-        const colour = Util.getOppositeColour();
+        const colour = Util.getOppositeColour(this._colour);
+        console.log(colour);
         return ((tile.firstElementChild !== null) && tile.firstElementChild.classList.contains(colour));
     }
     _getTileFromId(id){
