@@ -7,6 +7,12 @@ class Tile {
     static isOccupied(tileId){
         return (document.getElementById(tileId).firstElementChild !== null);
     }
+    static isOccupiedByColour(tileId, colour){
+        return (
+            document.getElementById(tileId).firstElementChild &&
+            document.getElementById(tileId).firstElementChild.classList.contains(colour)
+        );
+    }
     static removePiece(tile){
         tile.firstElementChild.remove();
     }
