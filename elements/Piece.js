@@ -19,6 +19,7 @@ class Piece extends HTMLElement {
         this._calculatePossibleMoves = this._calculatePossibleMoves.bind(this);
         this._canCapture = this._canCapture.bind(this);
         this._allMovesFromDirections = this._allMovesFromDirections.bind(this);
+        this._checkChecked = this._checkChecked.bind(this);
 
         this._possibleMoves = [];
 
@@ -65,6 +66,8 @@ class Piece extends HTMLElement {
             tile.appendChild(this._grabbedPiece);
             if(this._firstMove) this._firstMove = false;
             this._updateLocation();
+            this._updateValidSpaces();
+            this._checkChecked();
         }
     }
     _updateValidSpaces(){
@@ -118,5 +121,14 @@ class Piece extends HTMLElement {
             return moves;
         }).reduce((acc, val) => [...acc, ...val], []);
     }
+    _checkChecked(){
+        this._validSpaces.filter(space => {
+            const tile = document.getElementById(space);
+            if(tile.firstElementChild && tile.firstElementChild.localName === "king-x"){
+                if(Tile.isOccupiedByColour(tile.id, Util.getOppositeColour(this._colour))){
+                    Chessboard.checked((this._colour === "b") ? "w" : "b");
+                };
+            }
+        })
+    }
 }
-customElements.define('chess-piece', Piece);

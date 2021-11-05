@@ -12,6 +12,8 @@ class Chessboard extends HTMLElement {
             "G": "knight",
             "H": "rook",
         }
+        this._blackChecked = false;
+        this._whiteChecked = false;
         this._init();
     }
     _init(){
@@ -57,6 +59,14 @@ class Chessboard extends HTMLElement {
         piece.setAttribute('class', `chess-piece ${pieceCode[0]} ${this._pieceSize}`);
         return piece;
     }
+    static checked(colour){
+        if(colour === "b"){
+            this._blackChecked = true;
+        }else{
+            this._whiteChecked = true;
+        }
+        console.table([["White Checked:", this._whiteChecked], ["Black Checked:", this._blackChecked]]);
+    }
 }
 
-customElements.define('custom-chessboard', Chessboard);
+customElements.define('chessboard-x', Chessboard);
