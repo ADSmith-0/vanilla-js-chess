@@ -110,12 +110,7 @@ class Piece extends HTMLElement {
                 const tileId = Util.coordsToId(Util.addToLetter(this._x, (x*coeff)), this._y+(y*coeff));
                 if(Tile.isValid(tileId)){
                     moves.push([x*coeff, y*coeff]);
-                    if(Tile.isOccupiedByColour(tileId, Util.getOppositeColour(this._colour))){
-                        break;
-                    }else{
-                        moves.pop();
-                        break;
-                    }
+                    if(Tile.isOccupied(tileId)) break;
                 }else{
                     break;
                 }
