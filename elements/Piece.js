@@ -13,14 +13,13 @@ class Piece extends HTMLElement {
         this._trackCoords = this._trackCoords.bind(this);
         this._stopDrag = this._stopDrag.bind(this);
         this._moveIsValid = this._moveIsValid.bind(this);
+        this._updateValidSpaces = this._updateValidSpaces.bind(this);
         this._updateLocation = this._updateLocation.bind(this);
         this._calculateValidSpaces = this._calculateValidSpaces.bind(this);
         this._calculatePossibleMoves = this._calculatePossibleMoves.bind(this);
-        this._isOccupied = this._isOccupied.bind(this);
         this._isOccupiedBySameColour = this._isOccupiedBySameColour.bind(this);
         this._canCapture = this._canCapture.bind(this);
-        this._getOppositeColour = this._getOppositeColour.bind(this);
-        this._addToLetter = this._addToLetter.bind(this);
+        this._allMovesFromDirections = this._allMovesFromDirections.bind(this);
 
         this._possibleMoves = [];
 
@@ -37,6 +36,7 @@ class Piece extends HTMLElement {
         document.addEventListener('mouseup', this._stopDrag);
         this._grabbedPiece = e.target;
         this._toggleGrabbing();
+        this._updateValidSpaces();
     }
     _trackCoords(e){
         const { 
@@ -54,7 +54,7 @@ class Piece extends HTMLElement {
         document.removeEventListener('mouseup', this._stopDrag);
         this._grabbedPiece.style.transform = "none";
         this._toggleGrabbing();
-        this._hoveringOverTile = this._cleanTile(document.elementFromPoint(e.clientX, e.clientY));
+        this._hoveringOverTile = Tile.cleanTile(document.elementFromPoint(e.clientX, e.clientY));
         this._movePiece(this._hoveringOverTile);
     }
     _toggleGrabbing(){
@@ -62,21 +62,22 @@ class Piece extends HTMLElement {
     }
     _movePiece(tile){
         if(tile.id != this._currentTile && this._moveIsValid()){
-            if(this._canCapture(tile.id)) this._capturePiece(tile);
+            if(this._canCapture(tile.id)) Tile.removePiece(tile);
             tile.appendChild(this._grabbedPiece);
             if(this._firstMove) this._firstMove = false;
             this._updateLocation();
         }
     }
+    _updateValidSpaces(){
+        this._possibleMoves = this._calculatePossibleMoves();
+        this._validSpaces = this._calculateValidSpaces();
+    }
     _updateLocation(){
         this._currentTile = this._hoveringOverTile.id;
         this._x = this._currentTile[0];
         this._y = parseInt(this._currentTile[1]);
-        this._validSpaces = this._calculateValidSpaces();
     }
-    _cleanTile(tile){
-        return (tile.localName != "div") ? tile.parentElement : tile;
-    }
+    
     _moveIsValid(){
         console.log(this._validSpaces);
         const { length:moveIsValid } = this._validSpaces.filter(space => space === this._hoveringOverTile.id);
@@ -85,58 +86,39 @@ class Piece extends HTMLElement {
     _calculateValidSpaces(){
         return this._possibleMoves.map(move => {
             const [x, y] = move;
-            if(this._withinXBoundary(this._x, x) && this._withinYBoundary(this._y, y)){
-                const newTileID = this._getID(this._addToLetter(this._x, x), this._y+y)
+            if(Tile.withinXBoundary(this._x, x) && Tile.withinYBoundary(this._y, y)){
+                const newTileID = Util.coordsToId(Util.addToLetter(this._x, x), this._y+y)
                 if(!this._isOccupiedBySameColour(newTileID)) return newTileID;
             }
-        })
-        .filter(Boolean);
+        }).filter(Boolean);
     }
     _calculatePossibleMoves(){
         return [];
-    }
-    _isOccupied(id){
-        return (document.getElementById(id).firstElementChild !== null);
     }
     _isOccupiedBySameColour(id){
         return ((document.getElementById(id).firstElementChild) ? document.getElementById(id).firstElementChild.classList.contains(this._colour) : false);
     }
     _canCapture(id){
         const tile = document.getElementById(id);
-        const colour = this._getOppositeColour();
+        const colour = Util.getOppositeColour();
         return ((tile.firstElementChild !== null) && tile.firstElementChild.classList.contains(colour));
     }
-    _capturePiece(tile){
-        tile.firstElementChild.remove();
-    }
-    _getOppositeColour(){
-        return ((this._colour == "w") ? "b" : "w");
-    }
-    _numberFromLetter(letter){
-        return (letter.charCodeAt(0)-64);
-    }
-    _letterFromNumber(number){
-        return String.fromCharCode(number+64);
-    }
-    _addToLetter(letter, number){
-        return this._letterFromNumber(this._numberFromLetter(letter)+number);
-    }
-    _getID(x, y){
-        return x+y.toString();
-    }
-    _withinXBoundary(x, number){
-        const asciiCode = this._numberFromLetter(x);
-        const diffX = asciiCode+number;
-        return (1 <= diffX && diffX <= 8);
-    }
-    _withinYBoundary(y, number){
-        const diffY = y+number;
-        return (1 <= diffY && diffY <= 8);
+    _getTileFromId(id){
+        return document.getElementById(id);
     }
     _allMovesFromDirections(directions){
         return directions.map(direction => {
             const [x, y] = direction;
-            return [1,2,3,4,5,6,7,8].map(coeff => [x*coeff, y*coeff])
+            const moves = [];
+            for(let coeff = 1; coeff <= 8; coeff++){
+                const tileId = Util.coordsToId(Util.addToLetter(this._x, (x*coeff)), this._y+(y*coeff));
+                if(Tile.isValid(tileId)){
+                    moves.push([x*coeff, y*coeff]);
+                }else{
+                    break;
+                }
+            }
+            return moves;
         }).reduce((acc, val) => [...acc, ...val], []);
     }
 }
