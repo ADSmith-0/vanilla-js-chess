@@ -17,4 +17,13 @@ class Util {
     static coordsToId(x,y){
         return x+y.toString();
     }
+    static withinXBoundary(x, number){
+        const asciiCode = Util.numberFromLetter(x);
+        const diffX = asciiCode+number;
+        return (1 <= diffX && diffX <= 8);
+    }
+    static withinYBoundary(y, number){
+        const diffY = parseInt(y)+number;
+        return (1 <= diffY && diffY <= 8);
+    }
 }

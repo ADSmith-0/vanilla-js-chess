@@ -18,15 +18,6 @@ class Tile {
     }
     static isValid(tileId){
         const [x, y] = [...tileId];
-        return (Tile.withinXBoundary(x, 0) && Tile.withinYBoundary(y, 0));
-    }
-    static withinXBoundary(x, number){
-        const asciiCode = Util.numberFromLetter(x);
-        const diffX = asciiCode+number;
-        return (1 <= diffX && diffX <= 8);
-    }
-    static withinYBoundary(y, number){
-        const diffY = parseInt(y)+number;
-        return (1 <= diffY && diffY <= 8);
+        return (Util.withinXBoundary(x, 0) && Util.withinYBoundary(y, 0));
     }
 }

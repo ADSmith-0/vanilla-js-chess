@@ -85,7 +85,7 @@ class Piece extends HTMLElement {
     _calculateValidSpaces(){
         return this._possibleMoves.map(move => {
             const [x, y] = move;
-            if(Tile.withinXBoundary(this._x, x) && Tile.withinYBoundary(this._y, y)){
+            if(Util.withinXBoundary(this._x, x) && Util.withinYBoundary(this._y, y)){
                 const newTileID = Util.coordsToId(Util.addToLetter(this._x, x), this._y+y)
                 if(!Tile.isOccupiedByColour(newTileID, this._colour)) return newTileID;
             }
@@ -111,6 +111,9 @@ class Piece extends HTMLElement {
                 if(Tile.isValid(tileId)){
                     moves.push([x*coeff, y*coeff]);
                     if(Tile.isOccupiedByColour(tileId, Util.getOppositeColour(this._colour))){
+                        break;
+                    }else{
+                        moves.pop();
                         break;
                     }
                 }else{
