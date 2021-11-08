@@ -18,7 +18,6 @@ class Piece extends HTMLElement {
         this._updateLocation = this._updateLocation.bind(this);
         this._piecesInTheWay = this._piecesInTheWay.bind(this);
         this._canCapture = this._canCapture.bind(this);
-        // this._allMovesFromDirections = this._allMovesFromDirections.bind(this);
         this._checkChecked = this._checkChecked.bind(this);
 
         this.addEventListener('mousedown', this._handleDrag);
@@ -55,12 +54,10 @@ class Piece extends HTMLElement {
         this._grabbedPiece.classList.toggle('grabbing');
     }
     _movePiece(tile){
-        //tile.id != this._currentTile
         if(this._canCapture(tile.id)) Tile.removePiece(tile);
         tile.appendChild(this._grabbedPiece);
         if(this._firstMove) this._firstMove = false;
         this._updateLocation();
-        // this._checkChecked();
     }
     _updateLocation(){
         this._currentTile = this._hoveringOverTile.id;
@@ -100,31 +97,7 @@ class Piece extends HTMLElement {
     _getTileFromId(id){
         return document.getElementById(id);
     }
-    // _allMovesFromDirections(directions){
-    //     return directions.map(direction => {
-    //         const [x, y] = direction;
-    //         const moves = [];
-    //         for(let coeff = 1; coeff <= 8; coeff++){
-    //             const tileId = Util.coordsToId(Util.addToLetter(this._x, (x*coeff)), this._y+(y*coeff));
-    //             if(Tile.isValid(tileId)){
-    //                 moves.push([x*coeff, y*coeff]);
-    //                 if(Tile.isOccupied(tileId)) break;
-    //             }else{
-    //                 break;
-    //             }
-    //         }
-    //         return moves;
-    //     }).reduce((acc, val) => [...acc, ...val], []);
-    // }
     _checkChecked(){
-        // this._validSpaces.filter(space => {
-        //     const tile = document.getElementById(space);
-        //     if(tile.firstElementChild && tile.firstElementChild.localName === "king-x"){
-        //         if(Tile.isOccupiedByColour(tile.id, Util.getOppositeColour(this._colour))){
-        //             Chessboard.checked((this._colour === "b") ? "w" : "b");
-        //         };
-        //     }
-        // })
         return false;
     }
 }
