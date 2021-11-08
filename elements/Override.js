@@ -9,9 +9,8 @@ Array.prototype.containsSubArr = function(array){
         for(let j = 0, l=this[i].length; j < l; j++){
             if(this[i][j] !== array[j]) continue;
         }
-        return true;
     }
-    return false;
+    return true;
 }
 // Hide method from for-in loops
 Object.defineProperty(Array.prototype, "containsSubArr", {enumerable: false});

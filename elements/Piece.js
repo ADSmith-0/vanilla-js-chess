@@ -45,22 +45,23 @@ class Piece extends HTMLElement {
         document.removeEventListener('mouseup', this._stopDrag);
         this._grabbedPiece.style.transform = "none";
         this._toggleGrabbing();
-        this._hoveringOverTile = Tile.cleanTile(document.elementFromPoint(e.clientX, e.clientY));
-        if(this._moveIsValid(this._hoveringOverTile.id)){
-            this._movePiece(this._hoveringOverTile);
+        this._hoveringOverTileId = Tile.cleanTile(document.elementFromPoint(e.clientX, e.clientY)).id;
+        if(this._moveIsValid(this._hoveringOverTileId)){
+            this._movePiece(this._hoveringOverTileId);
         }
     }
     _toggleGrabbing(){
         this._grabbedPiece.classList.toggle('grabbing');
     }
-    _movePiece(tile){
-        if(this._canCapture(tile.id)) Tile.removePiece(tile);
+    _movePiece(tileId){
+        const tile = this._getTileFromId(tileId);
+        if(this._canCapture(tileId)) Tile.removePiece(this._getTileFromId(tile));
         tile.appendChild(this._grabbedPiece);
         if(this._firstMove) this._firstMove = false;
         this._updateLocation();
     }
     _updateLocation(){
-        this._currentTile = this._hoveringOverTile.id;
+        this._currentTile = this._hoveringOverTileId;
         this._x = this._currentTile[0];
         this._y = parseInt(this._currentTile[1]);
     }
@@ -73,6 +74,7 @@ class Piece extends HTMLElement {
             (diffY/Math.abs(diffY) || 0),
         ];
         if(!this._directionIsValid(direction)) return false;
+        // console.log(!this._directionIsValid(direction));
         return !this._piecesInTheWay(diffX, diffY, direction);
     }
     _piecesInTheWay(diffX, diffY, direction){
@@ -86,6 +88,9 @@ class Piece extends HTMLElement {
     }
     _directionIsValid(normalizedMove){
         // directions are unique, therefore length is never more than 1
+        console.log(normalizedMove);
+        console.log(this._directions);
+        console.log(this._directions.containsSubArr(normalizedMove));
         const directionValid = this._directions.containsSubArr(normalizedMove);
         return directionValid;
     }
