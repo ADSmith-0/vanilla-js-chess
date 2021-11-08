@@ -72,9 +72,9 @@ class Piece extends HTMLElement {
         const diffX = Util.getXDifference(this._x, x);
         const diffY = y - this._y;
         const direction = [
-            (!isNaN(diffX/Math.abs(diffX)) ? diffX/Math.abs(diffX) : 0),
-            (!isNaN(diffY/Math.abs(diffY)) ? diffY/Math.abs(diffY) : 0),
-        ]
+            (diffX/Math.abs(diffX) || 0),
+            (diffY/Math.abs(diffY) || 0),
+        ];
         if(!this._directionIsValid(direction)) return false;
         return !this._piecesInTheWay(diffX, diffY, direction);
     }
