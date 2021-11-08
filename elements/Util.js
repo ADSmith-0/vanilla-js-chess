@@ -26,4 +26,9 @@ class Util {
         const diffY = parseInt(y)+number;
         return (1 <= diffY && diffY <= 8);
     }
+    static getXDifference(x1, x2){
+        const numX1 = Util.numberFromLetter(x1);
+        const numX2 = Util.numberFromLetter(x2);
+        return numX2 - numX1;
+    }
 }

@@ -1,6 +1,10 @@
 class Pawn extends Piece {
     constructor(){
         super();
+        this._directions = [
+            [0,1],
+            [0,2]
+        ]
     }
     _calculateValidSpaces(){
         const directionMoves = [[0,1]];
@@ -8,18 +12,6 @@ class Pawn extends Piece {
             [-1,1],
             [1,1]
         ];
-        if(this._firstMove) directionMoves.push([0,2]); 
-        const moves = directionMoves.map(direction => {
-            const [x, y] = direction;
-            const tileId = Util.coordsToId(Util.addToLetter(this._x, x*this._forward), this._y+y*this._forward);
-            return (Tile.isValid(tileId) && !Tile.isOccupied(tileId)) ? tileId : 0;
-        }).filter(Boolean);
-        const captures = directionCaptures.map(direction => {
-            const [x, y] = direction;
-            const tileId = Util.coordsToId(Util.addToLetter(this._x, x*this._forward), this._y+y*this._forward);
-            return (Tile.isValid(tileId) && Tile.isOccupiedByColour(tileId, Util.getOppositeColour(this._colour))) ? tileId : 0;
-        }).filter(Boolean);
-        return [...moves, ...captures];
     }
 }
 customElements.define('pawn-x', Pawn);
