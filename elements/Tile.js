@@ -14,7 +14,7 @@ class Tile {
         );
     }
     static removePiece(tile){
-        tile.firstElementChild.remove();
+        document.getElementById(tile).firstElementChild.remove();
     }
     static isValid(tileId){
         const [x, y] = [...tileId];

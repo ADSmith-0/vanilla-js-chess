@@ -55,7 +55,7 @@ class Piece extends HTMLElement {
     }
     _movePiece(tileId){
         const tile = this._getTileFromId(tileId);
-        if(this._canCapture(tileId)) Tile.removePiece(this._getTileFromId(tile));
+        if(this._canCapture(tileId)) Tile.removePiece(tileId);
         tile.appendChild(this._grabbedPiece);
         if(this._firstMove) this._firstMove = false;
         this._updateLocation();
@@ -88,9 +88,6 @@ class Piece extends HTMLElement {
     }
     _directionIsValid(normalizedMove){
         // directions are unique, therefore length is never more than 1
-        console.log(normalizedMove);
-        console.log(this._directions);
-        console.log(this._directions.containsSubArr(normalizedMove));
         const directionValid = this._directions.containsSubArr(normalizedMove);
         return directionValid;
     }
