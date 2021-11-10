@@ -2,22 +2,25 @@ class Pawn extends Piece {
     constructor(){
         super();
         this._directions = [
-            [0,1]
+            [0, (1*this._forward)]
         ];
     }
     _moveIsValid(tileId){
         const [x, y] = [...tileId];
         const diffX = Util.getXDifference(this._x, x);
         const diffY = y - this._y;
+        const absDiffX = Math.abs(diffX);
+        const absDiffY = Math.abs(diffY);
         const direction = [
-            (diffX/Math.abs(diffX) || 0),
-            (diffY/Math.abs(diffY) || 0),
+            (diffX/absDiffX || 0),
+            (diffY/absDiffY || 0),
         ];
         return (
-            (((this._firstMove && diffY == 2) || diffY == 1) 
-            && !this._piecesInTheWay(diffX, diffY, direction))
+            (((this._firstMove && diffY == 2*this._forward) || diffY == this._forward) 
+            && !this._piecesInTheWay(diffX, diffY, direction)
+            && absDiffX == 0)
             ||
-            (Math.abs(diffX) == 1 && diffY == 1 
+            (absDiffX == 1 && absDiffY == 1 
             && Tile.isOccupiedByColour(tileId, Util.getOppositeColour(this._colour)))
         );
     }
