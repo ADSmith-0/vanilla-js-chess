@@ -5,8 +5,8 @@ class Pawn extends Piece {
             [0,1]
         ];
     }
-    _moveIsValid(tile){
-        const [x, y] = [...tile];
+    _moveIsValid(tileId){
+        const [x, y] = [...tileId];
         const diffX = Util.getXDifference(this._x, x);
         const diffY = y - this._y;
         const direction = [
@@ -18,7 +18,7 @@ class Pawn extends Piece {
             && !this._piecesInTheWay(diffX, diffY, direction))
             ||
             (Math.abs(diffX) == 1 && diffY == 1 
-            && Tile.isOccupiedByColour(tile, Util.getOppositeColour(this._colour)))
+            && Tile.isOccupiedByColour(tileId, Util.getOppositeColour(this._colour)))
         );
     }
 }

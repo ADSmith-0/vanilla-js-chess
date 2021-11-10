@@ -65,8 +65,8 @@ class Piece extends HTMLElement {
         this._x = this._currentTile[0];
         this._y = parseInt(this._currentTile[1]);
     }
-    _moveIsValid(tile){
-        const [x, y] = [...tile];
+    _moveIsValid(tileId){
+        const [x, y] = [...tileId];
         const diffX = Util.getXDifference(this._x, x);
         const diffY = y - this._y;
         const direction = [
