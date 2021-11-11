@@ -21,7 +21,7 @@ class Pawn extends Piece {
             && absDiffX == 0)
             ||
             (absDiffX == 1 && absDiffY == 1 
-            && Tile.isOccupiedByColour(tileId, Util.getOppositeColour(this._colour)))
+            && Tile.isOccupiedByOppositeColour(tileId))
         );
     }
 }

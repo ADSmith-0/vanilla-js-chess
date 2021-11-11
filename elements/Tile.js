@@ -13,6 +13,14 @@ class Tile {
             document.getElementById(tileId).firstElementChild.classList.contains(colour)
         );
     }
+    static isOccupiedByOppositeColour(tileId){
+        const tile = document.getElementById(tileId);
+        if(tile.firstChildElement){
+            const colour = (tile.firstChildElement.classList.contains("w")) ? "w" : "b";
+            return Tile.isOccupiedByColour(tileId, Util.getOppositeColour(colour));
+        }
+        return false;
+    }
     static removePiece(tile){
         document.getElementById(tile).firstElementChild.remove();
     }

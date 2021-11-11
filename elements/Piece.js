@@ -80,9 +80,9 @@ class Piece extends HTMLElement {
     _piecesInTheWay(diffX, diffY, direction){
         const [directionX, directionY] = direction;
         const limit = (diffX === 0) ? diffY : diffX;
-        for(let i = 1; i <= Math.abs(limit); i++){
-            const tile = Util.coordsToId(Util.addToLetter(this._x, (i*directionX)), this._y+(i*directionY));
-            if(Tile.isOccupied(tile)) return true;
+        for(let i = 1; i < Math.abs(limit); i++){
+            const tileId = Util.coordsToId(Util.addToLetter(this._x, (i*directionX)), this._y+(i*directionY));
+            if(Tile.isOccupied(tileId)) return true;
         }
         return false;
     }
