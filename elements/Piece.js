@@ -28,6 +28,7 @@ class Piece extends HTMLElement {
         document.addEventListener('mouseup', this._stopDrag);
         this._grabbedPiece = e.target;
         this._toggleGrabbing();
+        this._trackCoords(e);
     }
     _trackCoords(e){
         const { 
@@ -74,7 +75,6 @@ class Piece extends HTMLElement {
             (diffY/Math.abs(diffY) || 0),
         ];
         if(!this._directionIsValid(direction)) return false;
-        // console.log(!this._directionIsValid(direction));
         return !this._piecesInTheWay(diffX, diffY, direction);
     }
     _piecesInTheWay(diffX, diffY, direction){
