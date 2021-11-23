@@ -77,10 +77,11 @@ class Piece extends HTMLElement {
         if(!this._directionIsValid(direction)) return false;
         return !this._piecesInTheWay(diffX, diffY, direction);
     }
-    _piecesInTheWay(diffX, diffY, direction){
+    _piecesInTheWay(diffX, diffY, direction, inclusive=false){
         const [directionX, directionY] = direction;
-        const limit = (diffX === 0) ? diffY : diffX;
-        for(let i = 1; i < Math.abs(limit); i++){
+        let limit = Math.abs((diffX === 0) ? diffY : diffX);
+        if(inclusive) limit++;
+        for(let i = 1; i < limit; i++){
             const tileId = Util.coordsToId(Util.addToLetter(this._x, (i*directionX)), this._y+(i*directionY));
             if(Tile.isOccupied(tileId)) return true;
         }

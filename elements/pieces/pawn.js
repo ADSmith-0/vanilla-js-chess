@@ -17,7 +17,7 @@ class Pawn extends Piece {
         ];
         return (
             (((this._firstMove && diffY == 2*this._forward) || diffY == this._forward) 
-            && !this._piecesInTheWay(diffX, diffY, direction)
+            && !this._piecesInTheWay(diffX, diffY, direction, true)
             && absDiffX == 0)
             ||
             (absDiffX == 1 && absDiffY == 1 
