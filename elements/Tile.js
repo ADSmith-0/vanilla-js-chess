@@ -15,11 +15,8 @@ class Tile {
     }
     static isOccupiedByOppositeColour(tileId){
         const tile = document.getElementById(tileId);
-        console.log(tile.firstChildElement !== undefined);
-        console.log(tile);
-        if(tile.firstChildElement !== undefined){
-            const colour = (tile.firstChildElement.classList.contains("w")) ? "w" : "b";
-            console.log(colour);
+        if(!!tile.firstElementChild){
+            const colour = Util.getOppositeColour(this._colour);
             return Tile.isOccupiedByColour(tileId, Util.getOppositeColour(colour));
         }
         return false;
