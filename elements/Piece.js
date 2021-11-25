@@ -46,10 +46,13 @@ class Piece extends HTMLElement {
         document.removeEventListener('mouseup', this._stopDrag);
         this._grabbedPiece.style.transform = "none";
         this._toggleGrabbing();
-        this._hoveringOverTileId = Tile.cleanTile(document.elementFromPoint(e.clientX, e.clientY)).id;
+        this._hoveringOverTileId = this._hoveringOverTile(e).id;
         if(this._moveIsValid(this._hoveringOverTileId)){
             this._movePiece(this._hoveringOverTileId);
         }
+    }
+    _hoveringOverTile(e){
+        return Tile.cleanTile(document.elementFromPoint(e.clientX, e.clientY));
     }
     _toggleGrabbing(){
         this._grabbedPiece.classList.toggle('grabbing');
