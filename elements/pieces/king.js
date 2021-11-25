@@ -13,7 +13,7 @@ class King extends Piece {
         const diffY = y - this._y;
         return (
             (Math.abs(diffX) <= 1 && Math.abs(diffY) <= 1)
-            && !Tile.isOccupiedByOppositeColour(tileId)
+            && !Tile.isOccupiedByColour(tileId, this._colour)
         );
     }
 }
