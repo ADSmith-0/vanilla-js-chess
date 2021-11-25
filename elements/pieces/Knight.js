@@ -2,16 +2,16 @@ class Knight extends Piece {
     constructor(){
         super();
 
-        this._directions = [
-            [1, 2],
-            [-1, 2],
-            [2, 1],
-            [2, -1],
-            [1, -2],
-            [-1, -2],
-            [-2, -1],
-            [-2, 1]
-        ];
+        // this._directions = [
+        //     [1, 2],
+        //     [-1, 2],
+        //     [2, 1],
+        //     [2, -1],
+        //     [1, -2],
+        //     [-1, -2],
+        //     [-2, -1],
+        //     [-2, 1]
+        // ];
     }
     _piecesInTheWay(){
         return false;

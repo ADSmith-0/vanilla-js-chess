@@ -1,9 +1,9 @@
 class Pawn extends Piece {
     constructor(){
         super();
-        this._directions = [
-            [0, (1*this._forward)]
-        ];
+        // this._directions = [
+        //     [0, (1*this._forward)]
+        // ];
     }
     _moveIsValid(tileId){
         const [x, y] = [...tileId];
@@ -15,7 +15,6 @@ class Pawn extends Piece {
             (diffX/absDiffX || 0),
             (diffY/absDiffY || 0),
         ];
-        console.log(Tile.isOccupiedByOppositeColour(tileId));
         return (
             (((this._firstMove && diffY == 2*this._forward) || diffY == this._forward) 
             && !this._piecesInTheWay(diffX, diffY, direction, true)
