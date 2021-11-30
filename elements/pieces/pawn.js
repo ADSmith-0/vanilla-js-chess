@@ -1,9 +1,9 @@
 class Pawn extends Piece {
     constructor(){
         super();
-        // this._directions = [
-        //     [0, (1*this._forward)]
-        // ];
+        this._directions = [
+            [0, (1*this._forward)]
+        ];
     }
     _moveIsValid(tileId){
         const [x, y] = [...tileId];

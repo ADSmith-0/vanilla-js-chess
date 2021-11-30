@@ -12,6 +12,15 @@ class Chessboard extends HTMLElement {
             "G": "knight",
             "H": "rook",
         }
+        this._pressureMap = new Map();
+        this._pressureMap.set({"H": ["","b","b","b","b","b","b",""]});
+        this._pressureMap.set({"G": ["b","b","b","b","b","b","b","b","b"]});
+        this._pressureMap.set({"F": ["","","","","","","",""]});
+        this._pressureMap.set({"E": ["","","","","","","",""]});
+        this._pressureMap.set({"D": ["","","","","","","",""]});
+        this._pressureMap.set({"C": ["","","","","","","",""]});
+        this._pressureMap.set({"B": ["w","w","w","w","w","w","w","w","w"]});
+        this._pressureMap.set({"A": ["","w","w","w","w","w","w",""]});
         this._blackChecked = false;
         this._whiteChecked = false;
         this._init();
