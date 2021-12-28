@@ -1,4 +1,4 @@
-class Bishop extends Piece {
+class Bishop extends SlidingPiece {
     constructor(){
         super();
         this._directions = [

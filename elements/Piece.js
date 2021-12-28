@@ -16,7 +16,7 @@ class Piece extends HTMLElement {
 
         this.addEventListener('mousedown', this._handleDrag);
         this._setLocation();
-        console.log(this._location);
+        this.generateValidMoves();
     }
     _handleDrag(e) {
         e.preventDefault();
