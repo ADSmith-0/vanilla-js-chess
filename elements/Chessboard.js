@@ -21,5 +21,21 @@ class Chessboard extends HTMLElement {
 
         return tile;
     }
+    _makeMove(startTile, endTile){
+        const piece = document.getElementById(startTile).firstElementChild || null;
+        if(piece){
+            // check move is legal
+            piece.moveIsLegal();
+        }
+    }
+    _generateAllPsuedoLegalMoves(){
+        const chessboard = document.querySelector('chessboard-');
+        for(let tile of chessboard.children){
+            const piece = tile.firstElementChild || null;
+            if(piece){
+                piece.generateValidMoves();
+            }
+        }
+    }
 }
-window.customElements.define('chessboard-x', Chessboard);
+window.customElements.define('chessboard-', Chessboard);

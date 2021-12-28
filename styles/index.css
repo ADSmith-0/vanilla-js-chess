@@ -2,7 +2,7 @@ body {
     display: flex;
     justify-content: center;
 }
-chessboard-x {
+chessboard- {
     display: grid;
     grid-template-columns: repeat(8, 95px);
     grid-template-rows: repeat(8, 95px);
@@ -33,3 +33,15 @@ chessboard-x {
 .chess-piece.grabbing {
     cursor: grabbing;
 }
+pawn-.w.s { background-image: url('/img/wp-s.png'); }
+pawn-.b.s { background-image: url('/img/bp-s.png'); }
+rook-.w.s { background-image: url('/img/wr-s.png'); }
+rook-.b.s { background-image: url('/img/br-s.png'); }
+knight-.w.s { background-image: url('/img/wn-s.png'); }
+knight-.b.s { background-image: url('/img/bn-s.png'); }
+bishop-.w.s { background-image: url('/img/wb-s.png'); }
+bishop-.b.s { background-image: url('/img/bb-s.png'); }
+queen-.w.s { background-image: url('/img/wq-s.png'); }
+queen-.b.s { background-image: url('/img/bq-s.png'); }
+king-.w.s { background-image: url('/img/wk-s.png'); }
+king-.b.s { background-image: url('/img/bk-s.png'); }
