@@ -1,6 +1,9 @@
 class Chessboard extends HTMLElement {
     constructor(){
         super();
+        
+        this._initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
         this._init();
     }
     _init(){
@@ -10,6 +13,7 @@ class Chessboard extends HTMLElement {
                 this.appendChild(tile);
             }
         }
+        this._FENStringToBoardState(this._initialState);
     }
     _createTile(file, rank){
         const tile = document.createElement('div');
@@ -36,6 +40,56 @@ class Chessboard extends HTMLElement {
                 piece.generateValidMoves();
             }
         }
+    }
+    _boardStateToFENString(){
+
+    }
+    _FENStringToBoardState(FENString){
+        const board = FENString.split(/\s/)[0];
+        let rank = 8;
+        let file = 1;
+        for(let row of board.split('/')){
+            const squares = [...row];
+            for(let square of squares){
+                // if piece is not a number
+                if(!parseInt(square)){
+                    const pieceType = this._pieceFromLetter(square);
+                    const piece = document.createElement(pieceType);
+                    const colour = this._colourFromLetter(square);
+                    piece.setAttribute('class', "piece "+colour);
+
+                    const tile = new Tile(file, rank);
+                    document.getElementById(tile.getID()).appendChild(piece);
+                    file++;
+                }else{
+                    file += square;
+                }
+            }
+            file = 1;
+            rank--;
+        }
+    }
+
+    _pieceFromLetter(letter){
+        letter = letter.toLowerCase();
+        switch(letter){
+            case "p":
+                return "pawn-";
+            case "r":
+                return "rook-";
+            case "n":
+                return "knight-";
+            case "b":
+                return "bishop-";
+            case "k":
+                return "king-";
+            case "q":
+                return "queen-";
+        }
+    }
+
+    _colourFromLetter(letter){
+        return (letter.charCodeAt(0) > 90) ? "b" : "w";
     }
 }
 window.customElements.define('chessboard-', Chessboard);

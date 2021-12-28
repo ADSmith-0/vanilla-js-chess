@@ -11,7 +11,7 @@ chessboard- {
     background-color: #eee;
 }
 .dark-square {
-    background-color: #888;
+    background-color: #999;
 }
 .tile {
     height: 95px;
@@ -20,7 +20,7 @@ chessboard- {
     justify-content: center;
     align-items: center;
 }
-.chess-piece {
+.piece {
     user-select: none;
     cursor: grab;
     height: 80px;
@@ -30,18 +30,18 @@ chessboard- {
     justify-content: center;
     align-items: center;
 }
-.chess-piece.grabbing {
+.piece.grabbing {
     cursor: grabbing;
 }
-pawn-.w.s { background-image: url('/img/wp-s.png'); }
-pawn-.b.s { background-image: url('/img/bp-s.png'); }
-rook-.w.s { background-image: url('/img/wr-s.png'); }
-rook-.b.s { background-image: url('/img/br-s.png'); }
-knight-.w.s { background-image: url('/img/wn-s.png'); }
-knight-.b.s { background-image: url('/img/bn-s.png'); }
-bishop-.w.s { background-image: url('/img/wb-s.png'); }
-bishop-.b.s { background-image: url('/img/bb-s.png'); }
-queen-.w.s { background-image: url('/img/wq-s.png'); }
-queen-.b.s { background-image: url('/img/bq-s.png'); }
-king-.w.s { background-image: url('/img/wk-s.png'); }
-king-.b.s { background-image: url('/img/bk-s.png'); }
+pawn-.w { background-image: url('/img/wp-s.png'); }
+pawn-.b { background-image: url('/img/bp-s.png'); }
+rook-.w { background-image: url('/img/wr-s.png'); }
+rook-.b { background-image: url('/img/br-s.png'); }
+knight-.w { background-image: url('/img/wn-s.png'); }
+knight-.b { background-image: url('/img/bn-s.png'); }
+bishop-.w { background-image: url('/img/wb-s.png'); }
+bishop-.b { background-image: url('/img/bb-s.png'); }
+queen-.w { background-image: url('/img/wq-s.png'); }
+queen-.b { background-image: url('/img/bq-s.png'); }
+king-.w { background-image: url('/img/wk-s.png'); }
+king-.b { background-image: url('/img/bk-s.png'); }

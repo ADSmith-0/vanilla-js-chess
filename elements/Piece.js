@@ -14,9 +14,9 @@ class Piece extends HTMLElement {
         this._toggleGrabbing = this._toggleGrabbing.bind(this);
         this._setLocation = this._setLocation.bind(this);
 
-        this.addEventListener('mousedown', this._handleDrag);
-        this._setLocation();
+        // this._setLocation();
         this.generateValidMoves();
+        this.addEventListener('mousedown', this._handleDrag);
     }
     _handleDrag(e) {
         e.preventDefault();
@@ -43,12 +43,13 @@ class Piece extends HTMLElement {
         this._grabbedPiece.style.transform = "none";
         this._toggleGrabbing();
         this._hoveringOverTileId = this._hoveringOverTile(e).id;
-        if (this._moveIsValid(this._hoveringOverTileId)) {
-            this._movePiece(this._hoveringOverTileId);
-        }
+        // if (this._moveIsValid(this._hoveringOverTileId)) {
+        //     this._movePiece(this._hoveringOverTileId);
+        // }
     }
     _hoveringOverTile(e) {
-        return Tile.cleanTile(document.elementFromPoint(e.clientX, e.clientY));
+        const tile = document.elementFromPoint(e.clientX, e.clientY);
+        return (tile.localName != "div") ? tile.parentElement : tile;
     }
     _toggleGrabbing() {
         this._grabbedPiece.classList.toggle('grabbing');
