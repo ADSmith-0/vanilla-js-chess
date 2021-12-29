@@ -6,16 +6,19 @@ class Piece extends HTMLElement {
 
         this._location = "";
 
+        this._hasMoved = false;
+        this._forward = (this.classList.contains("w")) ? 1 : -1;
+        this._colour = (this.classList.contains("w")) ? "w" : "b";
+
         // binding functions
         this._grabbedPiece = null;
         this._handleDrag = this._handleDrag.bind(this);
         this._trackCoords = this._trackCoords.bind(this);
         this._stopDrag = this._stopDrag.bind(this);
         this._toggleGrabbing = this._toggleGrabbing.bind(this);
-        this._setLocation = this._setLocation.bind(this);
+        this._setLocation = this.setLocation.bind(this);
 
         // this._setLocation();
-        this.generateValidMoves();
         this.addEventListener('mousedown', this._handleDrag);
     }
     _handleDrag(e) {
@@ -55,9 +58,8 @@ class Piece extends HTMLElement {
         this._grabbedPiece.classList.toggle('grabbing');
     }
     generateValidMoves(){
-
     }
-    _setLocation(){
+    setLocation(){
         this._location = this.parentElement.id;
     }
 }

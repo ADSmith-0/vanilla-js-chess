@@ -2,6 +2,7 @@ class Chessboard extends HTMLElement {
     constructor(){
         super();
         
+        this._whiteToMove = null;
         this._initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
         this._init();
@@ -14,6 +15,9 @@ class Chessboard extends HTMLElement {
             }
         }
         this._FENStringToBoardState(this._initialState);
+    }
+    connectedCallback() {
+        this._generateAllPsuedoLegalMoves();
     }
     _createTile(file, rank){
         const tile = document.createElement('div');
@@ -37,7 +41,9 @@ class Chessboard extends HTMLElement {
         for(let tile of chessboard.children){
             const piece = tile.firstElementChild || null;
             if(piece){
+                piece.setLocation();
                 piece.generateValidMoves();
+                console.log(piece._validMoves);
             }
         }
     }
