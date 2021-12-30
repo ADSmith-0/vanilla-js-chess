@@ -31,7 +31,7 @@ class Pawn extends Piece {
                 }
             }
         }
-        const captureSquares = [[1, 1], [-1, 1]];
+        const captureSquares = [[1, 1*this._forward], [-1, 1*this._forward]];
         for(let captureSquare of captureSquares){
             const [x, y] = captureSquare;
             const tile = new Tile(file+x, rank+y);

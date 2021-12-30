@@ -6,6 +6,14 @@ class Chessboard extends HTMLElement {
         this._initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
         this._init();
+
+        this._startTile = null;
+
+        this._storeStartTile = this._storeStartTile.bind(this);
+        this._handleMovePiece = this._handleMovePiece.bind(this);
+
+        this.addEventListener('mousedown', this._storeStartTile);
+        this.addEventListener('mouseup', this._handleMovePiece);
     }
     _init(){
         for(let rank = 8; rank >= 1; rank--){
@@ -29,11 +37,33 @@ class Chessboard extends HTMLElement {
 
         return tile;
     }
+    _getTile(x, y){
+        const { offsetLeft:left, offsetTop:top } = document.querySelector('chessboard-');
+        const { offsetWidth:tileWidth, offsetHeight:tileHeight } = document.getElementById('11');
+        const file = Math.floor((x - left) / tileWidth);
+        const rank = Math.floor((y - top) / tileHeight);
+        return file.toString()+rank.toString();
+    }
+    _getTileMouseIsHoveringOver(e){
+        const id = this._getTile(e.clientX, e.clientY);
+        return id;
+    }
+    _storeStartTile(e){
+        this._startTile = this._getTileMouseIsHoveringOver(e);
+    }
+    _handleMovePiece(e){
+        const endTile = this._getTileMouseIsHoveringOver(e);
+        this._makeMove(this._startTile, endTile);
+    }
     _makeMove(startTile, endTile){
+        console.log("start tile:", startTile, ", end Tile:", endTile);
         const piece = document.getElementById(startTile).firstElementChild || null;
         if(piece){
             // check move is legal
-            piece.moveIsLegal();
+            console.log(piece.moveIsLegal(endTile));
+            if(piece.moveIsLegal(endTile)){
+                piece.move(endTile);
+            }
         }
     }
     _generateAllPsuedoLegalMoves(){
