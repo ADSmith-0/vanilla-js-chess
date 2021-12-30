@@ -38,10 +38,10 @@ class Chessboard extends HTMLElement {
         return tile;
     }
     _getTile(x, y){
-        const { offsetLeft:left, offsetTop:top } = document.querySelector('chessboard-');
+        const { offsetLeft:left, offsetTop:top, offsetHeight:height } = document.querySelector('chessboard-');
         const { offsetWidth:tileWidth, offsetHeight:tileHeight } = document.getElementById('11');
-        const file = Math.floor((x - left) / tileWidth);
-        const rank = Math.floor((y - top) / tileHeight);
+        const file = Math.floor((x - left) / tileWidth)+1;
+        const rank = Math.floor(((height+top) - y) / tileHeight)+1;
         return file.toString()+rank.toString();
     }
     _getTileMouseIsHoveringOver(e){
@@ -58,12 +58,9 @@ class Chessboard extends HTMLElement {
     _makeMove(startTile, endTile){
         console.log("start tile:", startTile, ", end Tile:", endTile);
         const piece = document.getElementById(startTile).firstElementChild || null;
-        if(piece){
-            // check move is legal
-            console.log(piece.moveIsLegal(endTile));
-            if(piece.moveIsLegal(endTile)){
-                piece.move(endTile);
-            }
+        console.log(document.getElementById(startTile).firstElementChild);
+        if(piece && piece.moveIsLegal(endTile)){
+            piece.move(endTile);
         }
     }
     _generateAllPsuedoLegalMoves(){

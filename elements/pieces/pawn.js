@@ -9,9 +9,13 @@ class Pawn extends Piece {
         // bind functions
         this.getDirections = this.getDirections.bind(this);
         this.getValidMoves = this.getValidMoves.bind(this);
+
+        this._forward = (this.classList.contains("w")) ? 1 : -1;
     }
 
     generateValidMoves(){
+        // console.log(this.classList);
+        console.log(this._colour);
         let [file, rank] = this._location;
         file = parseInt(file);
         rank = parseInt(rank);

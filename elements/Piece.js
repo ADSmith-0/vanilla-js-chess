@@ -7,8 +7,8 @@ class Piece extends HTMLElement {
         this._location = "";
 
         this._hasMoved = false;
-        this._forward = (this.classList.contains("w")) ? 1 : -1;
-        this._colour = (this.classList.contains("w")) ? "w" : "b";
+        console.log(this);
+        this._colour = (this.getAttribute('class').contains("w")) ? "w" : "b";
 
         // binding functions
         this._grabbedPiece = null;
