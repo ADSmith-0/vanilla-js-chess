@@ -56,11 +56,10 @@ class Chessboard extends HTMLElement {
         this._makeMove(this._startTile, endTile);
     }
     _makeMove(startTile, endTile){
-        console.log("start tile:", startTile, ", end Tile:", endTile);
         const piece = document.getElementById(startTile).firstElementChild || null;
-        console.log(document.getElementById(startTile).firstElementChild);
         if(piece && piece.moveIsLegal(endTile)){
             piece.move(endTile);
+            this._generateAllPsuedoLegalMoves();
         }
     }
     _generateAllPsuedoLegalMoves(){
@@ -70,7 +69,7 @@ class Chessboard extends HTMLElement {
             if(piece){
                 piece.setLocation();
                 piece.generateValidMoves();
-                console.log(piece._validMoves);
+                // console.log(piece._validMoves);
             }
         }
     }

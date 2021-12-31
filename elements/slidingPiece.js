@@ -4,6 +4,7 @@ class SlidingPiece extends Piece {
     }
 
     generateValidMoves(){
+        this._validMoves = [];
         for(let direction of this._directions){
             const [x, y] = direction;
             let [file, rank] = this._location;

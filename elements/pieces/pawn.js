@@ -1,29 +1,36 @@
 class Pawn extends Piece {
     constructor() {
         super();
-        this._directions = [
-            [0, 1*this._forward]
-        ];
+        this._forward = null;
+        this._directions = null;
         this._validMoves = [];
 
         // bind functions
         this.getDirections = this.getDirections.bind(this);
         this.getValidMoves = this.getValidMoves.bind(this);
 
+        this._forward = null;
+    }
+
+    connectedCallback(){
         this._forward = (this.classList.contains("w")) ? 1 : -1;
+        this._directions = [
+            [0, 1 * this._forward]
+        ];
     }
 
     generateValidMoves(){
-        // console.log(this.classList);
-        console.log(this._colour);
         let [file, rank] = this._location;
         file = parseInt(file);
         rank = parseInt(rank);
+
+        this._validMoves = [];
 
         for(let direction of this._directions){
             const [x, y] = direction;
 
             let tile = new Tile(file+x, rank+y);
+            console.log(this._directions);
             if(tile.withinBounds() && !tile.isOccupied()){
                 this._validMoves.push(tile.getID());
     

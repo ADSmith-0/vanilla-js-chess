@@ -7,8 +7,7 @@ class Piece extends HTMLElement {
         this._location = "";
 
         this._hasMoved = false;
-        console.log(this);
-        this._colour = (this.getAttribute('class').contains("w")) ? "w" : "b";
+        this._colour = null;
 
         // binding functions
         this._grabbedPiece = null;
@@ -22,6 +21,9 @@ class Piece extends HTMLElement {
 
         // this._setLocation();
         this.addEventListener('mousedown', this._handleDrag);
+    }
+    connectedCallback(){
+        this._colour = (this.classList.contains("w")) ? "w" : "b";
     }
     _handleDrag(e) {
         e.preventDefault();
@@ -68,6 +70,7 @@ class Piece extends HTMLElement {
     }
 
     moveIsLegal(endTile){
+        console.log(this._validMoves);
         return this._validMoves.includes(endTile);
     }
 
