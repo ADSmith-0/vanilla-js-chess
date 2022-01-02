@@ -17,10 +17,13 @@ class Knight extends Piece {
         this.getDirections = this.getDirections.bind(this);
         this.getValidMoves = this.getValidMoves.bind(this);
     }
-    getValidMoves(){
+    generateValidMoves(){
         let [file, rank] = this._location;
         file = parseInt(file);
         rank = parseInt(rank);
+        
+        this._validMoves = [];
+
         for(let direction of this._directions){
             const [x, y] = direction;
             const tile = new Tile(file+x, rank+y);
