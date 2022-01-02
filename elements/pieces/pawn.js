@@ -30,7 +30,6 @@ class Pawn extends Piece {
             const [x, y] = direction;
 
             let tile = new Tile(file+x, rank+y);
-            console.log(this._directions);
             if(tile.withinBounds() && !tile.isOccupied()){
                 this._validMoves.push(tile.getID());
     
@@ -39,6 +38,7 @@ class Pawn extends Piece {
                     if(newTile.withinBounds() && !newTile.isOccupied()){
                         this._validMoves.push(newTile.getID());
                     }
+                    this._hasMoved = true;
                 }
             }
         }

@@ -11,9 +11,12 @@ class SlidingPiece extends Piece {
             file = parseInt(file);
             rank = parseInt(rank);
             for(let i = 1; i <= 8; i++){
-                const tile = new Tile(file+x, rank+y);
+                const tile = new Tile(file+x*i, rank+y*i);
                 if(tile.withinBounds() && !tile.isOccupied()){
                     this._validMoves.push(tile.getID());
+                }else if(tile.withinBounds() && tile.getColour() !== this._colour){
+                    this._validMoves.push(tile.getID());
+                    break;
                 }else{
                     break;
                 }

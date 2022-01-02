@@ -77,6 +77,9 @@ class Piece extends HTMLElement {
     move(endTile){
         const tile = document.getElementById(endTile);
         this.remove();
+        if(tile.firstElementChild){
+            tile.firstElementChild.remove();
+        }
         tile.appendChild(this);
     }
 }
