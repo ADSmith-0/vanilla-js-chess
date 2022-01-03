@@ -77,7 +77,7 @@ class Chessboard extends HTMLElement {
 
     }
     _FENStringToBoardState(FENString){
-        const board = FENString.split(/\s/)[0];
+        const [board, colourToMove, canCastle, timer, noOfHalfMoves, noOfMoves] = FENString.split(/\s/);
         let rank = 8;
         let file = 1;
         for(let row of board.split('/')){
@@ -100,6 +100,11 @@ class Chessboard extends HTMLElement {
             file = 1;
             rank--;
         }
+
+        this._whiteToMove = (colourToMove == "w");
+
+        
+
     }
 
     _pieceFromLetter(letter){

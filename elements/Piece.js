@@ -75,11 +75,16 @@ class Piece extends HTMLElement {
     }
 
     move(endTile){
-        const tile = document.getElementById(endTile);
-        this.remove();
-        if(tile.firstElementChild){
-            tile.firstElementChild.remove();
+        if(this._location !== endTile){
+            const tile = document.getElementById(endTile);
+            this.remove();
+            if(tile.firstElementChild){
+                tile.firstElementChild.remove();
+            }
+            tile.appendChild(this);
+            if(!this._hasMoved){
+                this._hasMoved = true;
+            }
         }
-        tile.appendChild(this);
     }
 }

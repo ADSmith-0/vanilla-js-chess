@@ -38,7 +38,6 @@ class Pawn extends Piece {
                     if(newTile.withinBounds() && !newTile.isOccupied()){
                         this._validMoves.push(newTile.getID());
                     }
-                    this._hasMoved = true;
                 }
             }
         }
