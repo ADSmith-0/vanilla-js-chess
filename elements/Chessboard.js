@@ -3,7 +3,11 @@ class Chessboard extends HTMLElement {
         super();
         
         this._whiteToMove = null;
-        this._initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        // this._initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+        this._initialState = "rnbqk1nr/pppppppp/8/8/2b5/8/PPPP1PPP/RNBQK2R w KQkq - 0 1"
+
+        this._whiteCanCastle = { "king": false, "queen": false };
+        this._blackCanCastle = { "king": false, "queen": false };
 
         this._init();
 
@@ -94,7 +98,7 @@ class Chessboard extends HTMLElement {
                     document.getElementById(tile.getID()).appendChild(piece);
                     file++;
                 }else{
-                    file += square;
+                    file += parseInt(square);
                 }
             }
             file = 1;
@@ -103,8 +107,24 @@ class Chessboard extends HTMLElement {
 
         this._whiteToMove = (colourToMove == "w");
 
-        
-
+        for(let char of canCastle){
+            switch(char){
+                case "K":
+                    this._whiteCanCastle["king"] = true;
+                    break;
+                case "Q":
+                    this._whiteCanCastle["queen"] = true;
+                    break;
+                case "k":
+                    this._blackCanCastle["king"] = true;
+                    break;
+                case "q":
+                    this._blackCanCastle["queen"] = true;
+                    break;
+                default:
+                    console.error(char, "does not exist, incorrect FENString");
+            }
+        }
     }
 
     _pieceFromLetter(letter){
