@@ -83,7 +83,6 @@ class Piece extends HTMLElement {
     }
 
     moveIsLegal(endTile){
-        console.log(this._validMoves);
         return this._validMoves.includes(endTile);
     }
 
