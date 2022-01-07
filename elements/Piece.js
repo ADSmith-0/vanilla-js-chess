@@ -16,8 +16,17 @@ class Piece extends HTMLElement {
         this._stopDrag = this._stopDrag.bind(this);
         this._toggleGrabbing = this._toggleGrabbing.bind(this);
         this.setLocation = this.setLocation.bind(this);
+        this.getLocation = this.getLocation.bind(this);
         this.moveIsLegal = this.moveIsLegal.bind(this);
         this.move = this.move.bind(this);
+        this.hasMove = this.hasMove.bind(this);
+        this.hasMoved = this.hasMoved.bind(this);
+        this.getColour = this.getColour.bind(this);
+        this.setDirections = this.setDirections.bind(this);
+        this.getDirections = this.getDirections.bind(this);
+        this.getValidMoves = this.getValidMoves.bind(this);
+        this.addValidMoves = this.addValidMoves.bind(this);
+        this.resetValidMoves = this.resetValidMoves.bind(this);
 
         // this._setLocation();
         this.addEventListener('mousedown', this._handleDrag);
@@ -69,6 +78,10 @@ class Piece extends HTMLElement {
         this._location = this.parentElement.id;
     }
 
+    getLocation() {
+        return this._location;
+    }
+
     moveIsLegal(endTile){
         console.log(this._validMoves);
         return this._validMoves.includes(endTile);
@@ -86,5 +99,41 @@ class Piece extends HTMLElement {
                 this._hasMoved = true;
             }
         }
+    }
+
+    hasMove(move) {
+        return this._validMoves.includes(move);
+    }
+
+    hasMoved(){
+        return this._hasMoved;
+    }
+
+    getColour(){
+        return this._colour;
+    }
+
+    setDirections(directions){
+        this._directions = directions;
+    }
+
+    getDirections() {
+        return this._directions;
+    }
+
+    getValidMoves() {
+        return this._validMoves;
+    }
+
+    addValidMove(move){
+        this._validMoves.push(move);
+    }
+
+    addValidMoves(moves){
+        this._validMoves.push([...moves]);
+    }
+
+    resetValidMoves(){
+        this._validMoves = [];
     }
 }

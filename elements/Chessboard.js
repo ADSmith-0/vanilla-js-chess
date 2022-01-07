@@ -6,8 +6,10 @@ class Chessboard extends HTMLElement {
         // this._initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
         this._initialState = "rnbqk1nr/pppppppp/8/8/2b5/8/PPPP1PPP/RNBQK2R w KQkq - 0 1"
 
-        this._whiteCanCastle = { "king": false, "queen": false };
-        this._blackCanCastle = { "king": false, "queen": false };
+        this._whiteCanCastle = { "king": true, "queen": true };
+        this._blackCanCastle = { "king": true, "queen": true };
+
+        this._storeCastlingState();
 
         this._init();
 
@@ -15,6 +17,8 @@ class Chessboard extends HTMLElement {
 
         this._storeStartTile = this._storeStartTile.bind(this);
         this._handleMovePiece = this._handleMovePiece.bind(this);
+        this._updateCastling = this._updateCastling.bind(this);
+        this._storeCastlingState = this._storeCastlingState.bind(this);
 
         this.addEventListener('mousedown', this._storeStartTile);
         this.addEventListener('mouseup', this._handleMovePiece);
@@ -63,7 +67,19 @@ class Chessboard extends HTMLElement {
         const piece = document.getElementById(startTile).firstElementChild || null;
         if(piece && piece.moveIsLegal(endTile)){
             piece.move(endTile);
+            if(piece.localName == "king-"){
+                const [file, rank] = endTile;
+                const king = piece.colour
+                if(this._whiteCanCastle["king"] && endTile == "71"
+                || this._whiteCanCastle["queen"] && endTile == "31"
+                || this._CanCastle["king"] && endTile == "31"
+                || this._whiteCanCastle["queen"] && endTile == "31"){
+
+                }
+            }
             this._generateAllPsuedoLegalMoves();
+            this._updateCastling();
+            this._storeCastlingState();
         }
     }
     _generateAllPsuedoLegalMoves(){
@@ -76,6 +92,45 @@ class Chessboard extends HTMLElement {
                 // console.log(piece._validMoves);
             }
         }
+    }
+    _updateCastling(){
+        const [blackKing, whiteKing] = document.querySelectorAll('king-');
+
+        if(blackKing.hasMoved()){
+            this._blackCanCastle = { "king": false, "queen": false };
+        }
+
+        if(whiteKing.hasMoved()) {
+            this._whiteCanCastle = { "king": false, "queen": false };
+        }
+
+        const whiteKingHasntMoved = Object.values(this._whiteCanCastle).filter(Boolean).length;
+        const blackKingHasntMoved = Object.values(this._blackCanCastle).filter(Boolean).length;
+        
+        if(!(whiteKingHasntMoved && blackKingHasntMoved)) return; 
+
+        // qr: black queen-side rook, kr: black king-side rook
+        // qR: white queen-side rook, kR: white king-side rook
+        // Based off of FEN notation
+        const [qr, kr, qR, kR] = document.querySelectorAll('rook-');
+        
+        if(whiteKingHasntMoved){
+            // rooks are selected in the order black a8, black h8, white a1, white h1
+            this._blackCanCastle["queen"] = !qr.hasMoved();
+            this._blackCanCastle["king"] = !kr.hasMoved();
+        }
+        
+        if(blackKingHasntMoved){
+            // rooks are selected in the order black a8, black h8, white a1, white h1
+            this._whiteCanCastle["queen"] = !qR.hasMoved();
+            this._whiteCanCastle["king"] = !kR.hasMoved();
+        }
+    }
+    _storeCastlingState(){
+        sessionStorage.setItem('qr', this._blackCanCastle["queen"]);
+        sessionStorage.setItem('kr', this._blackCanCastle["king"]);
+        sessionStorage.setItem('qR', this._whiteCanCastle["queen"]);
+        sessionStorage.setItem('kR', this._whiteCanCastle["king"]);
     }
     _boardStateToFENString(){
 

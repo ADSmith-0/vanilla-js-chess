@@ -21,7 +21,7 @@ class Tile {
     withinBounds(){
         return (this._file >= 1 && this._file <= 8 && this._rank >= 1 && this._rank <= 8);
     }
-    getColour(){
+    getPieceColour(){
         const piece = this.isOccupied();
         if(piece){
             return (piece.classList.contains("w")) ? "w" : "b";

@@ -1,7 +1,7 @@
 class Knight extends Piece {
     constructor() {
         super();
-        this._directions = [
+        this.setDirections([
             [-1, 2],
             [ 1, 2],
             [ 2, 1],
@@ -10,33 +10,22 @@ class Knight extends Piece {
             [-1,-2],
             [-2,-1],
             [-2, 1],
-        ];
-        this._validMoves = [];
-
-        // bind functions
-        this.getDirections = this.getDirections.bind(this);
-        this.getValidMoves = this.getValidMoves.bind(this);
+        ]);
     }
     generateValidMoves(){
-        let [file, rank] = this._location;
+        let [file, rank] = this.getLocation();
         file = parseInt(file);
         rank = parseInt(rank);
         
-        this._validMoves = [];
+        this.resetValidMoves();
 
-        for(let direction of this._directions){
+        for(let direction of this.getDirections()){
             const [x, y] = direction;
             const tile = new Tile(file+x, rank+y);
-            if(tile.withinBounds() && this._colour !== tile.getColour()){
-                this._validMoves.push(tile.getID());
+            if(tile.withinBounds() && this.getColour() !== tile.getPieceColour()){
+                this.addValidMove(tile.getID());
             }
         }
-    }
-    getDirections() {
-        return this._directions;
-    }
-    getValidMoves() {
-        return this._validMoves;
     }
 }
 window.customElements.define('knight-', Knight);
