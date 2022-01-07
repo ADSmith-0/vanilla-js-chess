@@ -130,7 +130,7 @@ class Piece extends HTMLElement {
     }
 
     addValidMoves(moves){
-        this._validMoves.push([...moves]);
+        this._validMoves.push(...moves);
     }
 
     resetValidMoves(){

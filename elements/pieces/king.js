@@ -31,7 +31,7 @@ class King extends Piece {
                 this.addValidMove(tile.getID());
             }
         }
-
+        
         this.addValidMoves(this._getCastlingMoves());
     }
     _getCastlingMoves(){
