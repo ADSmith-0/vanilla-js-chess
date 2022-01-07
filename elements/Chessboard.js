@@ -210,5 +210,16 @@ class Chessboard extends HTMLElement {
     _colourFromLetter(letter){
         return (letter.charCodeAt(0) > 90) ? "b" : "w";
     }
+
+    getAllOpponentMoves(colour){
+        const moves = [];
+        for(let tile of this.children){
+            const piece = tile.firstElementChild;
+            if(piece && piece.getColour() !== colour){
+                moves.push(...piece.getValidMoves());
+            }
+        }
+        return new Set(moves);
+    }
 }
 window.customElements.define('chessboard-', Chessboard);

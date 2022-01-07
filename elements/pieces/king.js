@@ -27,11 +27,14 @@ class King extends Piece {
             const [x, y] = direction;
             const tile = new Tile(file+x, rank+y);
             if(tile.withinBounds() && tile.getPieceColour() !== this.getColour()){
-                // check if move will put king in check
-                this.addValidMove(tile.getID());
+                const board = document.querySelector('chessboard-');
+                const opponentMoves = board.getAllOpponentMoves(this.getColour());
+                if(!opponentMoves.has(tile.getID())){
+                    this.addValidMove(tile.getID());
+                }
             }
         }
-        
+
         this.addValidMoves(this._getCastlingMoves());
     }
     _getCastlingMoves(){
