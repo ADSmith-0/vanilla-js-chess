@@ -40,7 +40,7 @@ class Pawn extends Piece {
         for(let captureSquare of captureSquares){
             const [x, y] = captureSquare;
             const tile = new Tile(file+x, rank+y);
-            if(tile.withinBounds() && this.getColour() !== tile.getPieceColour()){
+            if(tile.withinBounds() && tile.isOccupied() && tile.getPieceColour() !== this.getColour()){
                 this.addValidMove(tile.getID());
             }
         }
