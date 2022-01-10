@@ -1,14 +1,10 @@
 class Tile {
     constructor(file, rank){
-        // if(this.withinBounds(file, rank)){
-            this._file = file;
-            this._rank = rank;
-    
-            this.getID = this.getID.bind(this);
-            this.isOccupied = this.isOccupied.bind(this);
-        // }else{
-        //     return null;
-        // }
+        this._file = file;
+        this._rank = rank;
+
+        this.getID = this.getID.bind(this);
+        this.isOccupied = this.isOccupied.bind(this);
     }
     isOccupied(){
         // console.log(this.getID());

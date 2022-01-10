@@ -1,138 +1,109 @@
 class Piece extends HTMLElement {
+    #directions = [];
+    #validMoves = [];
+    #location = "";
+    #hasMoved = false;
+    #colour = null;
+    #grabbedPiece = null;
+
     constructor(){
         super();
-        this._directions = [];
-        this._validMoves = [];
 
-        this._location = "";
-
-        this._hasMoved = false;
-        this._colour = null;
-
-        // binding functions
-        this._grabbedPiece = null;
-        this._handleDrag = this._handleDrag.bind(this);
-        this._trackCoords = this._trackCoords.bind(this);
-        this._stopDrag = this._stopDrag.bind(this);
-        this._toggleGrabbing = this._toggleGrabbing.bind(this);
-        this.setLocation = this.setLocation.bind(this);
-        this.getLocation = this.getLocation.bind(this);
-        this.moveIsLegal = this.moveIsLegal.bind(this);
-        this.move = this.move.bind(this);
-        this.hasMove = this.hasMove.bind(this);
-        this.hasMoved = this.hasMoved.bind(this);
-        this.getColour = this.getColour.bind(this);
-        this.setDirections = this.setDirections.bind(this);
-        this.getDirections = this.getDirections.bind(this);
-        this.getValidMoves = this.getValidMoves.bind(this);
-        this.addValidMoves = this.addValidMoves.bind(this);
-        this.resetValidMoves = this.resetValidMoves.bind(this);
-
-        // this._setLocation();
-        this.addEventListener('mousedown', this._handleDrag);
+        this.addEventListener('mousedown', this.#handleDrag.bind(this));
     }
     connectedCallback(){
-        this._colour = (this.classList.contains("w")) ? "w" : "b";
+        this.#colour = (this.classList.contains("w")) ? "w" : "b";
     }
-    _handleDrag(e) {
+    #handleDrag(e) {
         e.preventDefault();
-        document.addEventListener('mousemove', this._trackCoords);
-        document.addEventListener('mouseup', this._stopDrag);
-        this._grabbedPiece = e.target;
-        this._toggleGrabbing();
-        this._trackCoords(e);
+        document.onmousemove = this.#trackCoords.bind(this);
+        document.onmouseup = this.#stopDrag.bind(this);
+        this.#grabbedPiece = e.target;
+        this.#toggleGrabbing();
     }
-    _trackCoords(e) {
+    #trackCoords(e){
         const {
             offsetLeft: pieceX,
             offsetTop: pieceY,
             offsetWidth: pieceWidth,
             offsetHeight: pieceHeight
-        } = this._grabbedPiece;
+        } = this.#grabbedPiece;
         const deltaX = e.clientX - (pieceX + pieceWidth / 2);
         const deltaY = e.clientY - (pieceY + pieceHeight / 2);
-        this._grabbedPiece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        this.#grabbedPiece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
     }
-    _stopDrag(e) {
-        this._grabbedPiece.style.transform = "none";
-        document.removeEventListener('mousemove', this._trackCoords);
-        document.removeEventListener('mouseup', this._stopDrag);
-        this._toggleGrabbing();
-        // this._hoveringOverTileId = this._hoveringOverTile(e).id;
-        // if (this._moveIsValid(this._hoveringOverTileId)) {
-        //     this._movePiece(this._hoveringOverTileId);
-        // }
+    #stopDrag(e) {
+        this.#grabbedPiece.style.transform = "none";
+        document.onmousemove = null;
+        document.onmouseup = null;
+        this.#toggleGrabbing();
     }
-    _hoveringOverTile(e) {
-        const tile = document.elementFromPoint(e.clientX, e.clientY);
-        return (tile.localName != "div") ? tile.parentElement : tile;
-    }
-    _toggleGrabbing() {
-        this._grabbedPiece.classList.toggle('grabbing');
+    #toggleGrabbing() {
+        this.#grabbedPiece.classList.toggle('grabbing');
     }
     
     generateValidMoves(){
     }
 
     setLocation(){
-        this._location = this.parentElement.id;
+        this.#location = this.parentElement.id;
     }
 
     getLocation() {
-        return this._location;
+        return this.#location;
     }
 
     moveIsLegal(endTile){
-        return this._validMoves.includes(endTile);
+        return this.#validMoves.includes(endTile);
     }
 
     move(endTile){
-        if(this._location !== endTile){
+        if(this.#location !== endTile){
             const tile = document.getElementById(endTile);
             this.remove();
             if(tile.firstElementChild){
                 tile.firstElementChild.remove();
             }
             tile.appendChild(this);
-            if(!this._hasMoved){
-                this._hasMoved = true;
+            if(!this.#hasMoved){
+                this.#hasMoved = true;
             }
         }
     }
 
     hasMove(move) {
-        return this._validMoves.includes(move);
+        return this.#validMoves.includes(move);
     }
 
     hasMoved(){
-        return this._hasMoved;
+        return this.#hasMoved;
     }
 
     getColour(){
-        return this._colour;
+        return this.#colour;
     }
 
     setDirections(directions){
-        this._directions = directions;
+        this.#directions = directions;
     }
 
     getDirections() {
-        return this._directions;
+        return this.#directions;
     }
 
     getValidMoves() {
-        return this._validMoves;
+        return this.#validMoves;
     }
 
     addValidMove(move){
-        this._validMoves.push(move);
+        this.#validMoves.push(move);
     }
 
     addValidMoves(moves){
-        this._validMoves.push(...moves);
+        this.#validMoves.push(...moves);
     }
 
     resetValidMoves(){
-        this._validMoves = [];
+        this.#validMoves = [];
     }
 }
