@@ -1,43 +1,42 @@
 class Chessboard extends HTMLElement {
+    #whiteToMove = null;
+    // #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    #initialState = "rnbqk1nr/pppppppp/8/8/2b5/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    #canCastle = {
+        "b": { "king": true, "queen": true },
+        "w": { "king": true, "queen": true }
+    };
+
+    #startTile = null;
+    
     constructor(){
         super();
         
-        this._whiteToMove = null;
-        // this._initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-        this._initialState = "rnbqk1nr/pppppppp/8/8/2b5/8/PPPP1PPP/RNBQK2R w KQkq - 0 1"
+        this.#storeCastlingState();
 
-        this._canCastle = { 
-            "b": { "king": true, "queen": true },
-            "w": { "king": true, "queen": true }
-        };
+        this.#init();
 
-        this._storeCastlingState();
+        // this.#storeStartTile = this.#storeStartTile.bind(this);
+        // this.#handleMovePiece = this.#handleMovePiece.bind(this);
+        // this.#updateCastling = this.#updateCastling.bind(this);
+        // this.#storeCastlingState = this.#storeCastlingState.bind(this);
 
-        this._init();
-
-        this._startTile = null;
-
-        this._storeStartTile = this._storeStartTile.bind(this);
-        this._handleMovePiece = this._handleMovePiece.bind(this);
-        this._updateCastling = this._updateCastling.bind(this);
-        this._storeCastlingState = this._storeCastlingState.bind(this);
-
-        this.addEventListener('mousedown', this._storeStartTile);
-        this.addEventListener('mouseup', this._handleMovePiece);
+        this.addEventListener('mousedown', this.#storeStartTile);
+        this.addEventListener('mouseup', this.#handleMovePiece);
     }
-    _init(){
+    #init(){
         for(let rank = 8; rank >= 1; rank--){
             for(let file = 1; file <= 8; file++){
-                const tile = this._createTile(file, rank);
+                const tile = this.#createTile(file, rank);
                 this.appendChild(tile);
             }
         }
-        this._FENStringToBoardState(this._initialState);
+        this.#FENStringToBoardState(this.#initialState);
     }
     connectedCallback() {
-        this._generateAllPsuedoLegalMoves();
+        this.#generateAllPsuedoLegalMoves();
     }
-    _createTile(file, rank){
+    #createTile(file, rank){
         const tile = document.createElement('div');
         tile.setAttribute('id', file.toString()+rank.toString());
         
@@ -47,37 +46,37 @@ class Chessboard extends HTMLElement {
 
         return tile;
     }
-    _getTile(x, y){
+    #getTile(x, y){
         const { offsetLeft:left, offsetTop:top, offsetHeight:height } = document.querySelector('chessboard-');
         const { offsetWidth:tileWidth, offsetHeight:tileHeight } = document.getElementById('11');
         const file = Math.floor((x - left) / tileWidth)+1;
         const rank = Math.floor(((height+top) - y) / tileHeight)+1;
         return file.toString()+rank.toString();
     }
-    _getTileMouseIsHoveringOver(e){
-        const id = this._getTile(e.clientX, e.clientY);
+    #getTileMouseIsHoveringOver(e){
+        const id = this.#getTile(e.clientX, e.clientY);
         return id;
     }
-    _storeStartTile(e){
-        this._startTile = this._getTileMouseIsHoveringOver(e);
+    #storeStartTile(e){
+        this.#startTile = this.#getTileMouseIsHoveringOver(e);
     }
-    _handleMovePiece(e){
-        const endTile = this._getTileMouseIsHoveringOver(e);
-        this._makeMove(this._startTile, endTile);
+    #handleMovePiece(e){
+        const endTile = this.#getTileMouseIsHoveringOver(e);
+        this.#makeMove(this.#startTile, endTile);
     }
-    _makeMove(startTile, endTile){
+    #makeMove(startTile, endTile){
         const piece = document.getElementById(startTile).firstElementChild || null;
         if(piece && piece.moveIsLegal(endTile)){
             piece.move(endTile);
-            this._checkForCastleMove(piece, endTile);
-            this._generateAllPsuedoLegalMoves();
-            this._updateCastling();
-            this._storeCastlingState();
+            this.#checkForCastleMove(piece, endTile);
+            this.#generateAllPsuedoLegalMoves();
+            this.#updateCastling();
+            this.#storeCastlingState();
         }
     }
-    _checkForCastleMove(piece, endTile){
+    #checkForCastleMove(piece, endTile){
         const [file, rank] = endTile;
-        const { king:canCastleKingside, queen:canCastleQueenside } = this._canCastle[piece.getColour()];
+        const { king:canCastleKingside, queen:canCastleQueenside } = this.#canCastle[piece.getColour()];
         if(piece.localName == "king-"){
             if(file == "7" && canCastleKingside){
                 const rook = document.getElementById("8"+rank).firstElementChild;
@@ -89,30 +88,30 @@ class Chessboard extends HTMLElement {
             }
         }
     }
-    _generateAllPsuedoLegalMoves(){
+    #generateAllPsuedoLegalMoves(){
         const chessboard = document.querySelector('chessboard-');
         for(let tile of chessboard.children){
             const piece = tile.firstElementChild || null;
             if(piece){
                 piece.setLocation();
                 piece.generateValidMoves();
-                // console.log(piece._validMoves);
+                // console.log(piece.#validMoves);
             }
         }
     }
-    _updateCastling(){
+    #updateCastling(){
         const [blackKing, whiteKing] = document.querySelectorAll('king-');
 
         if(blackKing.hasMoved()){
-            this._canCastle["b"] = { "king": false, "queen": false };
+            this.#canCastle["b"] = { "king": false, "queen": false };
         }
 
         if(whiteKing.hasMoved()) {
-            this._canCastle["w"] = { "king": false, "queen": false };
+            this.#canCastle["w"] = { "king": false, "queen": false };
         }
 
-        const whiteKingHasntMoved = Object.values(this._canCastle["w"]).filter(Boolean).length;
-        const blackKingHasntMoved = Object.values(this._canCastle["b"]).filter(Boolean).length;
+        const whiteKingHasntMoved = Object.values(this.#canCastle["w"]).filter(Boolean).length;
+        const blackKingHasntMoved = Object.values(this.#canCastle["b"]).filter(Boolean).length;
         
         if(!(whiteKingHasntMoved && blackKingHasntMoved)) return; 
 
@@ -123,26 +122,26 @@ class Chessboard extends HTMLElement {
         
         if(blackKingHasntMoved){
             // rooks are selected in the order black a8, black h8, white a1, white h1
-            this._canCastle["b"]["queen"] = !qr.hasMoved();
-            this._canCastle["b"]["king"] = !kr.hasMoved();
+            this.#canCastle["b"]["queen"] = !qr.hasMoved();
+            this.#canCastle["b"]["king"] = !kr.hasMoved();
         }
         
         if(whiteKingHasntMoved){
             // rooks are selected in the order black a8, black h8, white a1, white h1
-            this._canCastle["w"]["queen"] = !qR.hasMoved();
-            this._canCastle["w"]["king"] = !kR.hasMoved();
+            this.#canCastle["w"]["queen"] = !qR.hasMoved();
+            this.#canCastle["w"]["king"] = !kR.hasMoved();
         }
     }
-    _storeCastlingState(){
-        sessionStorage.setItem('qr', this._canCastle["b"]["queen"]);
-        sessionStorage.setItem('kr', this._canCastle["b"]["king"]);
-        sessionStorage.setItem('qR', this._canCastle["w"]["queen"]);
-        sessionStorage.setItem('kR', this._canCastle["w"]["king"]);
+    #storeCastlingState(){
+        sessionStorage.setItem('qr', this.#canCastle["b"]["queen"]);
+        sessionStorage.setItem('kr', this.#canCastle["b"]["king"]);
+        sessionStorage.setItem('qR', this.#canCastle["w"]["queen"]);
+        sessionStorage.setItem('kR', this.#canCastle["w"]["king"]);
     }
-    _boardStateToFENString(){
+    #boardStateToFENString(){
 
     }
-    _FENStringToBoardState(FENString){
+    #FENStringToBoardState(FENString){
         const [board, colourToMove, canCastle, timer, noOfHalfMoves, noOfMoves] = FENString.split(/\s/);
         let rank = 8;
         let file = 1;
@@ -151,9 +150,9 @@ class Chessboard extends HTMLElement {
             for(let square of squares){
                 // if piece is not a number
                 if(!parseInt(square)){
-                    const pieceType = this._pieceFromLetter(square);
+                    const pieceType = this.#pieceFromLetter(square);
                     const piece = document.createElement(pieceType);
-                    const colour = this._colourFromLetter(square);
+                    const colour = this.#colourFromLetter(square);
                     piece.setAttribute('class', "piece "+colour);
 
                     const tile = new Tile(file, rank);
@@ -167,21 +166,21 @@ class Chessboard extends HTMLElement {
             rank--;
         }
 
-        this._whiteToMove = (colourToMove == "w");
+        this.#whiteToMove = (colourToMove == "w");
 
         for(let char of canCastle){
             switch(char){
                 case "K":
-                    this._canCastle["w"]["king"] = true;
+                    this.#canCastle["w"]["king"] = true;
                     break;
                 case "Q":
-                    this._canCastle["w"]["queen"] = true;
+                    this.#canCastle["w"]["queen"] = true;
                     break;
                 case "k":
-                    this._canCastle["b"]["king"] = true;
+                    this.#canCastle["b"]["king"] = true;
                     break;
                 case "q":
-                    this._canCastle["b"]["queen"] = true;
+                    this.#canCastle["b"]["queen"] = true;
                     break;
                 default:
                     console.error(char, "does not exist, incorrect FENString");
@@ -189,7 +188,7 @@ class Chessboard extends HTMLElement {
         }
     }
 
-    _pieceFromLetter(letter){
+    #pieceFromLetter(letter){
         letter = letter.toLowerCase();
         switch(letter){
             case "p":
@@ -207,7 +206,7 @@ class Chessboard extends HTMLElement {
         }
     }
 
-    _colourFromLetter(letter){
+    #colourFromLetter(letter){
         return (letter.charCodeAt(0) > 90) ? "b" : "w";
     }
 

@@ -12,7 +12,7 @@ class Piece extends HTMLElement {
         this.addEventListener('mousedown', this.#handleDrag.bind(this));
     }
     connectedCallback(){
-        this.#colour = (this.classList.contains("w")) ? "w" : "b";
+        this.setColour();
     }
     #handleDrag(e) {
         e.preventDefault();
@@ -79,7 +79,15 @@ class Piece extends HTMLElement {
         return this.#hasMoved;
     }
 
+    setColour(){
+        this.#colour = (this.classList.contains("w")) ? "w" : "b";
+    }
+
     getColour(){
+        // if(!this.#colour){
+        //     console.log(this.#colour);
+        //     console.trace();
+        // }
         return this.#colour;
     }
 

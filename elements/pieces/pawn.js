@@ -1,13 +1,16 @@
 class Pawn extends Piece {
+    #forward = null;
+    #colour = null;
+    
     constructor() {
         super();
-        this._forward = null;
     }
 
     connectedCallback(){
-        this._forward = (this.classList.contains("w")) ? 1 : -1;
+        this.#forward = (this.classList.contains("w")) ? 1 : -1;
+        this.setColour();
         this.setDirections([
-            [0, 1 * this._forward]
+            [0, 1 * this.#forward]
         ]);
     }
 
@@ -33,7 +36,7 @@ class Pawn extends Piece {
                 }
             }
         }
-        const captureSquares = [[1, 1*this._forward], [-1, 1*this._forward]];
+        const captureSquares = [[1, 1*this.#forward], [-1, 1*this.#forward]];
         for(let captureSquare of captureSquares){
             const [x, y] = captureSquare;
             const tile = new Tile(file+x, rank+y);

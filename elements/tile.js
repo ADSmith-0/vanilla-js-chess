@@ -1,7 +1,10 @@
 class Tile {
+    #file;
+    #rank;
+
     constructor(file, rank){
-        this._file = file;
-        this._rank = rank;
+        this.#file = file;
+        this.#rank = rank;
 
         this.getID = this.getID.bind(this);
         this.isOccupied = this.isOccupied.bind(this);
@@ -12,10 +15,10 @@ class Tile {
         return tile.firstElementChild;
     }
     getID(){
-        return this._file.toString()+this._rank.toString();
+        return this.#file.toString()+this.#rank.toString();
     }
     withinBounds(){
-        return (this._file >= 1 && this._file <= 8 && this._rank >= 1 && this._rank <= 8);
+        return (this.#file >= 1 && this.#file <= 8 && this.#rank >= 1 && this.#rank <= 8);
     }
     getPieceColour(){
         const piece = this.isOccupied();

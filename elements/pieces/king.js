@@ -1,7 +1,6 @@
 class King extends Piece {
     #isChecked = false;
 
-
     constructor() {
         super();
         this.setDirections([
