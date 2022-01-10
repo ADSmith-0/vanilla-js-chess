@@ -16,11 +16,6 @@ class Chessboard extends HTMLElement {
 
         this.#init();
 
-        // this.#storeStartTile = this.#storeStartTile.bind(this);
-        // this.#handleMovePiece = this.#handleMovePiece.bind(this);
-        // this.#updateCastling = this.#updateCastling.bind(this);
-        // this.#storeCastlingState = this.#storeCastlingState.bind(this);
-
         this.addEventListener('mousedown', this.#storeStartTile);
         this.addEventListener('mouseup', this.#handleMovePiece);
     }
@@ -115,19 +110,19 @@ class Chessboard extends HTMLElement {
         
         if(!(whiteKingHasntMoved && blackKingHasntMoved)) return; 
 
+        // rooks are selected in the order black a8, black h8, white a1, white h1
         // qr: black queen-side rook, kr: black king-side rook
         // qR: white queen-side rook, kR: white king-side rook
         // Based off of FEN notation
         const [qr, kr, qR, kR] = document.querySelectorAll('rook-');
         
         if(blackKingHasntMoved){
-            // rooks are selected in the order black a8, black h8, white a1, white h1
+            
             this.#canCastle["b"]["queen"] = !qr.hasMoved();
             this.#canCastle["b"]["king"] = !kr.hasMoved();
         }
         
         if(whiteKingHasntMoved){
-            // rooks are selected in the order black a8, black h8, white a1, white h1
             this.#canCastle["w"]["queen"] = !qR.hasMoved();
             this.#canCastle["w"]["king"] = !kR.hasMoved();
         }
