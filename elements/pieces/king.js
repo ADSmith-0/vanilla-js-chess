@@ -1,4 +1,7 @@
 class King extends Piece {
+    #isChecked = false;
+
+
     constructor() {
         super();
         this.setDirections([
@@ -11,18 +14,13 @@ class King extends Piece {
             [1, -1],
             [-1, -1]
         ]);
-
-        this._isChecked = false;
-
-        // bind functions
-        this._getCastleMoves = this._getCastlingMoves.bind(this);
     }
     generateValidMoves(){
         let [file, rank] = this.getLocation();
         file = parseInt(file);
         rank = parseInt(rank);
         
-        this._validMoves = [];
+        this.resetValidMoves();
         for(let direction of this.getDirections()){
             const [x, y] = direction;
             const tile = new Tile(file+x, rank+y);
@@ -35,9 +33,9 @@ class King extends Piece {
             }
         }
 
-        this.addValidMoves(this._getCastlingMoves());
+        this.addValidMoves(this.#getCastlingMoves());
     }
-    _getCastlingMoves(){
+    #getCastlingMoves(){
         const rookKey = (this.getColour() == "w") ? "R" : "r";
         const kingSideCanCastle = sessionStorage.getItem("k" + rookKey);
         const queenSideCanCastle = sessionStorage.getItem("q" + rookKey);
