@@ -33,6 +33,32 @@ chessboard- {
 .piece.grabbing {
     cursor: grabbing;
 }
+.red {
+    animation: blink-animation 0.7s steps(5, start) infinite;
+    -webkit-animation: blink-animation 0.7s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+    0% {
+        background-image: linear-gradient(90deg, #00000000,  #00000000);
+    }
+    50% {
+        background-image: linear-gradient(90deg,  #ff0000aa, #ff0000aa);
+    }
+    100% {
+        background-image: linear-gradient(90deg, #00000000,  #00000000);
+    }
+}
+    @-webkit-keyframes blink-animation {
+    0% {
+        background-image: linear-gradient(90deg, #00000000,  #00000000);
+    }
+    50% {
+        background-image: linear-gradient(90deg,  #ff0000aa, #ff0000aa);
+    }
+    100% {
+        background-image: linear-gradient(90deg, #00000000,  #00000000);
+    }
+}   
 pawn-.w { background-image: url('/img/wp-s.png'); }
 pawn-.b { background-image: url('/img/bp-s.png'); }
 rook-.w { background-image: url('/img/wr-s.png'); }

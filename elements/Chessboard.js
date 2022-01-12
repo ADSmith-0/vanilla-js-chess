@@ -1,11 +1,18 @@
 class Chessboard extends HTMLElement {
-    #whiteToMove = null;
+    // replace with better implementation
+    #colourToMove = "w";
     // #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    #initialState = "rnbqk1nr/pppppppp/8/8/2b5/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    #initialState = "rnbqkbn1/pppppppp/8/8/1b6/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    // #initialState = "rnbqkbn1/pppppppp/8/8/4r3/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
     #canCastle = {
         "b": { "king": true, "queen": true },
         "w": { "king": true, "queen": true }
     };
+
+    #moves = {
+        "b": new Set([]),
+        "w": new Set([])
+    }
 
     #startTile = null;
     
@@ -61,13 +68,26 @@ class Chessboard extends HTMLElement {
     }
     #makeMove(startTile, endTile){
         const piece = document.getElementById(startTile).firstElementChild || null;
-        if(piece && piece.moveIsLegal(endTile)){
+        if (piece && piece.moveIsLegal(endTile)){
             piece.move(endTile);
             this.#checkForCastleMove(piece, endTile);
             this.#generateAllPsuedoLegalMoves();
-            this.#updateCastling();
-            this.#storeCastlingState();
+            if(this.#inCheck(piece.getColour())){
+                this.#flashKing();
+                piece.move(startTile);
+                this.#generateAllPsuedoLegalMoves();
+            }else{
+                this.#updateCastling();
+            }
         }
+    }
+    #flashKing(){
+        const { parentElement: kingTile } = document.querySelector('king-.'+this.#colourToMove);
+        this.#flash(kingTile);
+    }
+    #flash(tile){
+        tile.classList.add('red');
+        setTimeout(() => tile.classList.remove('red'), 2100);
     }
     #checkForCastleMove(piece, endTile){
         const [file, rank] = endTile;
@@ -85,15 +105,32 @@ class Chessboard extends HTMLElement {
     }
     #generateAllPsuedoLegalMoves(){
         const chessboard = document.querySelector('chessboard-');
+        const moves = {
+            "b": [],
+            "w": []
+        }
         for(let tile of chessboard.children){
             const piece = tile.firstElementChild || null;
             if(piece){
                 piece.setLocation();
                 piece.generateValidMoves();
-                // console.log(piece.#validMoves);
+                if(piece.getColour() == "w"){
+                    moves["w"].push(...piece.getValidMoves());
+                }else{
+                    moves["b"].push(...piece.getValidMoves());
+                }
             }
         }
+        this.#moves["w"] = new Set(moves["w"]);
+        this.#moves["b"] = new Set(moves["b"]);
     }
+
+    #inCheck(colour){
+        const opponentColour = this.getOpponentColour(colour);
+        const king = document.querySelector('king-.'+colour);
+        return (this.#moves[opponentColour].has(king.getLocation()));
+    }
+
     #updateCastling(){
         const [blackKing, whiteKing] = document.querySelectorAll('king-');
 
@@ -126,6 +163,8 @@ class Chessboard extends HTMLElement {
             this.#canCastle["w"]["queen"] = !qR.hasMoved();
             this.#canCastle["w"]["king"] = !kR.hasMoved();
         }
+
+        this.#storeCastlingState();
     }
     #storeCastlingState(){
         sessionStorage.setItem('qr', this.#canCastle["b"]["queen"]);
@@ -161,7 +200,7 @@ class Chessboard extends HTMLElement {
             rank--;
         }
 
-        this.#whiteToMove = (colourToMove == "w");
+        this.#colourToMove = colourToMove;
 
         for(let char of canCastle){
             switch(char){
@@ -206,14 +245,11 @@ class Chessboard extends HTMLElement {
     }
 
     getAllOpponentMoves(colour){
-        const moves = [];
-        for(let tile of this.children){
-            const piece = tile.firstElementChild;
-            if(piece && piece.getColour() !== colour){
-                moves.push(...piece.getValidMoves());
-            }
-        }
-        return new Set(moves);
+        return (colour == "w") ? this.#moves["b"] : this.#moves["w"];
+    }
+
+    getOpponentColour(colour) {
+        return (colour == "w") ? "b" : "w";
     }
 }
 window.customElements.define('chessboard-', Chessboard);
