@@ -9,3 +9,5 @@
 5. Stalemate needs to be added
 
 6. Sound needs to be added
+
+7. Add possible moves when you tap on a piece
