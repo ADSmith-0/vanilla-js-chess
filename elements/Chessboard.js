@@ -2,8 +2,14 @@ class Chessboard extends HTMLElement {
     // replace with better implementation
     #colourToMove = "w";
     // #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-    #initialState = "rnbqkbn1/pppppppp/8/8/1b6/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
-    // #initialState = "rnbqkbn1/pppppppp/8/8/4r3/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    // #initialState = "rnbqkbn1/pppppppp/8/8/1b6/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    #initialState = "rnbqkbn1/pppppppp/8/8/3r4/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    
+    #inCheck = {
+        "b": false,
+        "w": false
+    }
+
     #canCastle = {
         "b": { "king": true, "queen": true },
         "w": { "king": true, "queen": true }
@@ -72,7 +78,8 @@ class Chessboard extends HTMLElement {
             piece.move(endTile);
             this.#checkForCastleMove(piece, endTile);
             this.#generateAllPsuedoLegalMoves();
-            if(this.#inCheck(piece.getColour())){
+            this.#updateCheck();
+            if(this.#inCheck[piece.getColour()]){
                 this.#flashKing();
                 piece.move(startTile);
                 this.#generateAllPsuedoLegalMoves();
@@ -125,10 +132,13 @@ class Chessboard extends HTMLElement {
         this.#moves["b"] = new Set(moves["b"]);
     }
 
-    #inCheck(colour){
-        const opponentColour = this.getOpponentColour(colour);
-        const king = document.querySelector('king-.'+colour);
-        return (this.#moves[opponentColour].has(king.getLocation()));
+    #updateCheck(){
+        const [ blackKing, whiteKing ] = document.querySelectorAll('king-');
+        console.log(this.#moves["b"].has(whiteKing.getLocation()));
+        this.#inCheck = {
+            "w": this.#moves["b"].has(whiteKing.getLocation()),
+            "b": this.#moves["w"].has(blackKing.getLocation())
+        }
     }
 
     #updateCastling(){
@@ -250,6 +260,10 @@ class Chessboard extends HTMLElement {
 
     getOpponentColour(colour) {
         return (colour == "w") ? "b" : "w";
+    }
+
+    isInCheck(colour){
+        return this.#inCheck[colour];
     }
 }
 window.customElements.define('chessboard-', Chessboard);

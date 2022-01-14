@@ -20,11 +20,13 @@ class King extends Piece {
         rank = parseInt(rank);
         
         this.resetValidMoves();
+
+        const board = document.querySelector('chessboard-');
+
         for(let direction of this.getDirections()){
             const [x, y] = direction;
             const tile = new Tile(file+x, rank+y);
             if(tile.withinBounds() && tile.getPieceColour() !== this.getColour()){
-                const board = document.querySelector('chessboard-');
                 const opponentMoves = board.getAllOpponentMoves(this.getColour());
                 if(!opponentMoves.has(tile.getID())){
                     this.addValidMove(tile.getID());
@@ -32,7 +34,9 @@ class King extends Piece {
             }
         }
 
-        this.addValidMoves(this.#getCastlingMoves());
+        if(!board.isInCheck(this.getColour())){
+            this.addValidMoves(this.#getCastlingMoves());
+        }
     }
     #getCastlingMoves(){
         const rookKey = (this.getColour() == "w") ? "R" : "r";
