@@ -1,4 +1,4 @@
-~~1. King shouldn't be able to castle when in check, currently it can~~
+1. ~~King shouldn't be able to castle when in check, currently it can~~
 
 2. En passant needs to be coded
 
