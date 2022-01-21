@@ -15,9 +15,7 @@ class King extends Piece {
         ]);
     }
     generateValidMoves(){
-        let [file, rank] = this.getLocation();
-        file = parseInt(file);
-        rank = parseInt(rank);
+        const [file, rank] = this.getLocationArray();
         
         this.resetValidMoves();
 

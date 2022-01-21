@@ -53,6 +53,10 @@ class Piece extends HTMLElement {
         return this.#location;
     }
 
+    getLocationArray(){
+        return [...this.#location].map(x => parseInt(x));
+    }
+
     moveIsLegal(endTile){
         return this.#validMoves.includes(endTile);
     }
@@ -84,10 +88,6 @@ class Piece extends HTMLElement {
     }
 
     getColour(){
-        // if(!this.#colour){
-        //     console.log(this.#colour);
-        //     console.trace();
-        // }
         return this.#colour;
     }
 

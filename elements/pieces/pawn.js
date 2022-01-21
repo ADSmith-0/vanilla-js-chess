@@ -15,9 +15,7 @@ class Pawn extends Piece {
     }
 
     generateValidMoves(){
-        let [file, rank] = this.getLocation();
-        file = parseInt(file);
-        rank = parseInt(rank);
+        let [file, rank] = this.getLocationArray();
 
         this.resetValidMoves();
 
@@ -56,9 +54,7 @@ class Pawn extends Piece {
             const file = parseInt(startTile[0]);
             const startRank = parseInt(startTile[1]);
             const endRank = parseInt(endTile[1]);
-            let [ thisFile, thisRank ] = this.getLocation().map();
-            thisFile = parseInt(thisFile);
-            thisRank = parseInt(thisRank);
+            const [ thisFile, thisRank ] = this.getLocationArray();
             const moves = [];
 
             if (Math.abs(startRank - endRank) == 2 

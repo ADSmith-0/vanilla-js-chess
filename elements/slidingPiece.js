@@ -7,9 +7,7 @@ class SlidingPiece extends Piece {
         this.resetValidMoves();
         for(let direction of this.getDirections()){
             const [x, y] = direction;
-            let [file, rank] = this.getLocation();
-            file = parseInt(file);
-            rank = parseInt(rank);
+            const [file, rank] = this.getLocationArray();
             for(let i = 1; i <= 8; i++){
                 const tile = new Tile(file+x*i, rank+y*i);
                 if(tile.withinBounds() && !tile.isOccupied()){
