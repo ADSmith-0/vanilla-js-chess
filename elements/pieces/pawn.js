@@ -43,28 +43,32 @@ class Pawn extends Piece {
             }
         }
 
-        this.#checkForEnPassantMoves();
+        const enPassantMove = this.#checkForEnPassantMove();
+        if(enPassantMove) this.addValidMove(enPassantMove);
     }
 
-    #checkForEnPassantMoves(){
+    #checkForEnPassantMove(){
         const board = document.querySelector('chessboard-');
-        const { piece, startTile, endTile } = board.getLastMove();
+        const { piece, colour, startTile, endTile } = board.getLastMove();
 
         if(piece == "pawn-"){
             const file = parseInt(startTile[0]);
             const startRank = parseInt(startTile[1]);
             const endRank = parseInt(endTile[1]);
             const [ thisFile, thisRank ] = this.getLocationArray();
-            const moves = [];
+            let move = null;
 
             if (Math.abs(startRank - endRank) == 2 
             && Math.abs(file - thisFile) == 1 
-            && (thisRank == endRank)){
+            && (thisRank == endRank) 
+            && this.getColour() !== colour){
 
                 const difference = startRank - endRank;
-                const tile = new Tile(file, startTile - (difference/2));
-                moves.push(tile.getID())
+                const tile = new Tile(file, startRank - (difference/2));
+                move = tile.getID();
             }
+
+            return move;
         }
     }
 }

@@ -4,7 +4,7 @@ class Chessboard extends HTMLElement {
     // #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     // #initialState = "rnbqkbn1/pppppppp/8/8/1b6/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
     // #initialState = "rnbqkbn1/pppppppp/8/8/3r4/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
-    #initialState = "rnbqkbnr/pppppppp/8/2P5/8/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1";
+    #initialState = "rnbqkbnr/pppppppp/8/8/2p5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1";
     
     #inCheck = {
         "b": false,
@@ -23,6 +23,7 @@ class Chessboard extends HTMLElement {
 
     #lastMove = {
         "piece": null,
+        "colour": null,
         "startTile": null,
         "endTile": null
     }
@@ -79,20 +80,24 @@ class Chessboard extends HTMLElement {
         const endTile = this.#getTileMouseIsHoveringOver(e);
         this.#makeMove(this.#startTile, endTile);
     }
-    #makeMove(startTile, endTile){
-        const piece = document.getElementById(startTile).firstElementChild || null;
-        if (piece && piece.moveIsLegal(endTile)){
-            piece.move(endTile);
-            this.#checkForCastleMove(piece, endTile);
+    #makeMove(startTileID, endTileID){
+        const piece = document.getElementById(startTileID).firstElementChild || null;
+        if (piece && piece.moveIsLegal(endTileID)){
+            const lastMove = this.#lastMove;
+            const moves = this.#moves;
+            this.#checkForEnPassantMove(piece, new Tile(null, null, startTileID), new Tile(null, null, endTileID));
+            piece.move(endTileID);
+            this.#checkForCastleMove(piece, endTileID);
+            this.#setLastMove(piece.localName, piece.getColour(), startTileID, endTileID);
             this.#generateAllPsuedoLegalMoves();
             this.#updateCheck();
             if(this.#inCheck[piece.getColour()]){
                 this.#flashKing();
-                piece.move(startTile);
-                this.#generateAllPsuedoLegalMoves();
+                piece.move(startTileID);
+                this.#moves = moves;
+                this.#lastMove = lastMove;
             }else{
                 this.#updateCastling();
-                this.#setLastMove(piece.localName, startTile, endTile);
             }
         }
     }
@@ -110,6 +115,19 @@ class Chessboard extends HTMLElement {
             }
         }
     }
+    #checkForEnPassantMove(piece, startTile, endTile){
+        const [ startFile, startRank ] = startTile.getIDArray();
+        const [ endFile, endRank ] = endTile.getIDArray();
+        const diffFile = Math.abs(startFile - endFile);
+        const diffRank = Math.abs(startRank - endRank);
+        if(piece.localName == "pawn-" && !endTile.isOccupied() && 
+        diffFile == 1 && diffRank == 1){
+            
+            const pawnTile = new Tile(endFile, startRank);
+
+            document.getElementById(pawnTile.getID()).firstElementChild.remove();
+        }
+    }
     #generateAllPsuedoLegalMoves(){
         const chessboard = document.querySelector('chessboard-');
         const moves = {
@@ -125,17 +143,6 @@ class Chessboard extends HTMLElement {
                     moves["w"].push(...piece.getValidMoves());
                 }else{
                     moves["b"].push(...piece.getValidMoves());
-                }
-                
-                if(piece.localName == "pawn-"){
-                    const rank = piece.getLocation()[1];
-                    if(this.#lastMove['piece'] == "pawn-"){
-                        if(piece.colour == "b" && rank == 4){
-
-                        }else if(piece.colour == "w" && rank == 5){
-    
-                        }
-                    }
                 }
             }
         }
@@ -198,9 +205,8 @@ class Chessboard extends HTMLElement {
         sessionStorage.setItem('qR', this.#canCastle["w"]["queen"]);
         sessionStorage.setItem('kR', this.#canCastle["w"]["king"]);
     }
-    #setLastMove(piece, startTile, endTile){
-        this.#lastMove = { piece, startTile, endTile };
-        console.log(this.#lastMove);
+    #setLastMove(piece, colour, startTile, endTile){
+        this.#lastMove = { piece, colour, startTile, endTile };
     }
     getLastMove(){
         return this.#lastMove;

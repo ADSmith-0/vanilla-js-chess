@@ -2,9 +2,15 @@ class Tile {
     #file;
     #rank;
 
-    constructor(file, rank){
-        this.#file = file;
-        this.#rank = rank;
+    constructor(file, rank, id){
+
+        if(!id){
+            this.#file = file;
+            this.#rank = rank;
+        }else{
+            this.#file = parseInt(id[0]);
+            this.#rank = parseInt(id[1]);
+        }
 
         this.getID = this.getID.bind(this);
         this.isOccupied = this.isOccupied.bind(this);
@@ -16,6 +22,9 @@ class Tile {
     }
     getID(){
         return this.#file.toString()+this.#rank.toString();
+    }
+    getIDArray(){
+        return [this.#file, this.#rank];
     }
     withinBounds(){
         return (this.#file >= 1 && this.#file <= 8 && this.#rank >= 1 && this.#rank <= 8);
