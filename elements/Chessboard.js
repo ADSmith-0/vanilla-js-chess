@@ -3,7 +3,8 @@ class Chessboard extends HTMLElement {
     #colourToMove = "w";
     // #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     // #initialState = "rnbqkbn1/pppppppp/8/8/1b6/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
-    #initialState = "rnbqkbn1/pppppppp/8/8/3r4/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    // #initialState = "rnbqkbn1/pppppppp/8/8/3r4/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
+    #initialState = "rnbqkbnr/pppppppp/8/2P5/8/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1";
     
     #inCheck = {
         "b": false,
@@ -18,6 +19,12 @@ class Chessboard extends HTMLElement {
     #moves = {
         "b": new Set([]),
         "w": new Set([])
+    }
+
+    #lastMove = {
+        "piece": null,
+        "startTile": null,
+        "endTile": null
     }
 
     #startTile = null;
@@ -85,16 +92,9 @@ class Chessboard extends HTMLElement {
                 this.#generateAllPsuedoLegalMoves();
             }else{
                 this.#updateCastling();
+                this.#setLastMove(piece.localName, startTile, endTile);
             }
         }
-    }
-    #flashKing(){
-        const { parentElement: kingTile } = document.querySelector('king-.'+this.#colourToMove);
-        this.#flash(kingTile);
-    }
-    #flash(tile){
-        tile.classList.add('red');
-        setTimeout(() => tile.classList.remove('red'), 2100);
     }
     #checkForCastleMove(piece, endTile){
         const [file, rank] = endTile;
@@ -126,21 +126,37 @@ class Chessboard extends HTMLElement {
                 }else{
                     moves["b"].push(...piece.getValidMoves());
                 }
+                
+                if(piece.localName == "pawn-"){
+                    const rank = piece.getLocation()[1];
+                    if(this.#lastMove['piece'] == "pawn-"){
+                        if(piece.colour == "b" && rank == 4){
+
+                        }else if(piece.colour == "w" && rank == 5){
+    
+                        }
+                    }
+                }
             }
         }
         this.#moves["w"] = new Set(moves["w"]);
         this.#moves["b"] = new Set(moves["b"]);
     }
-
     #updateCheck(){
         const [ blackKing, whiteKing ] = document.querySelectorAll('king-');
-        console.log(this.#moves["b"].has(whiteKing.getLocation()));
         this.#inCheck = {
             "w": this.#moves["b"].has(whiteKing.getLocation()),
             "b": this.#moves["w"].has(blackKing.getLocation())
         }
     }
-
+    #flashKing() {
+        const { parentElement: kingTile } = document.querySelector('king-.' + this.#colourToMove);
+        this.#flash(kingTile);
+    }
+    #flash(tile) {
+        tile.classList.add('red');
+        setTimeout(() => tile.classList.remove('red'), 2100);
+    }
     #updateCastling(){
         const [blackKing, whiteKing] = document.querySelectorAll('king-');
 
@@ -181,6 +197,13 @@ class Chessboard extends HTMLElement {
         sessionStorage.setItem('kr', this.#canCastle["b"]["king"]);
         sessionStorage.setItem('qR', this.#canCastle["w"]["queen"]);
         sessionStorage.setItem('kR', this.#canCastle["w"]["king"]);
+    }
+    #setLastMove(piece, startTile, endTile){
+        this.#lastMove = { piece, startTile, endTile };
+        console.log(this.#lastMove);
+    }
+    getLastMove(){
+        return this.#lastMove;
     }
     #boardStateToFENString(){
 

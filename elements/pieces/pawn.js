@@ -44,6 +44,32 @@ class Pawn extends Piece {
                 this.addValidMove(tile.getID());
             }
         }
+
+        this.#checkForEnPassantMoves();
+    }
+
+    #checkForEnPassantMoves(){
+        const board = document.querySelector('chessboard-');
+        const { piece, startTile, endTile } = board.getLastMove();
+
+        if(piece == "pawn-"){
+            const file = parseInt(startTile[0]);
+            const startRank = parseInt(startTile[1]);
+            const endRank = parseInt(endTile[1]);
+            let [ thisFile, thisRank ] = this.getLocation().map();
+            thisFile = parseInt(thisFile);
+            thisRank = parseInt(thisRank);
+            const moves = [];
+
+            if (Math.abs(startRank - endRank) == 2 
+            && Math.abs(file - thisFile) == 1 
+            && (thisRank == endRank)){
+
+                const difference = startRank - endRank;
+                const tile = new Tile(file, startTile - (difference/2));
+                moves.push(tile.getID())
+            }
+        }
     }
 }
 window.customElements.define('pawn-', Pawn);
