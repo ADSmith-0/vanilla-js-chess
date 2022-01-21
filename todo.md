@@ -1,6 +1,6 @@
 1. ~~King shouldn't be able to castle when in check, currently it can~~
 
-2. En passant needs to be coded
+2. ~~En passant needs to be coded~~
 
 3. Moves need to alternate between the colours
 
