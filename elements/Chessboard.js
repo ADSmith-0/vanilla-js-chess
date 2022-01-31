@@ -1,11 +1,10 @@
 class Chessboard extends HTMLElement {
     // replace with better implementation
-    #colourToMove = "w";
-    // #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     // #initialState = "rnbqkbn1/pppppppp/8/8/1b6/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
     // #initialState = "rnbqkbn1/pppppppp/8/8/3r4/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
-    #initialState = "rnbqkbnr/pppppppp/8/8/2p5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1";
-    
+    // #initialState = "rnbqkbnr/pppppppp/8/8/2p5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1";
+
     #inCheck = {
         "b": false,
         "w": false
@@ -14,7 +13,7 @@ class Chessboard extends HTMLElement {
     #canCastle = {
         "b": { "king": true, "queen": true },
         "w": { "king": true, "queen": true }
-    };
+    }
 
     #moves = {
         "b": new Set([]),
@@ -29,6 +28,8 @@ class Chessboard extends HTMLElement {
     }
 
     #startTile = null;
+
+    #game = new Game();
     
     constructor(){
         super();
@@ -82,7 +83,7 @@ class Chessboard extends HTMLElement {
     }
     #makeMove(startTileID, endTileID){
         const piece = document.getElementById(startTileID).firstElementChild || null;
-        if (piece && piece.moveIsLegal(endTileID)){
+        if (piece && piece.getColour() == this.#game.getColourToMove() && piece.moveIsLegal(endTileID)){
             const lastMove = this.#lastMove;
             const moves = this.#moves;
             this.#checkForEnPassantMove(piece, new Tile(null, null, startTileID), new Tile(null, null, endTileID));
@@ -98,6 +99,7 @@ class Chessboard extends HTMLElement {
                 this.#lastMove = lastMove;
             }else{
                 this.#updateCastling();
+                this.#game.switchPlayerToMove();
             }
         }
     }
@@ -157,7 +159,7 @@ class Chessboard extends HTMLElement {
         }
     }
     #flashKing() {
-        const { parentElement: kingTile } = document.querySelector('king-.' + this.#colourToMove);
+        const { parentElement: kingTile } = document.querySelector('king-.' + this.#game.getColourToMove());
         this.#flash(kingTile);
     }
     #flash(tile) {
@@ -239,7 +241,7 @@ class Chessboard extends HTMLElement {
             rank--;
         }
 
-        this.#colourToMove = colourToMove;
+        this.#game.setColourToMove(colourToMove);
 
         for(let char of canCastle){
             switch(char){

@@ -2,7 +2,7 @@
 
 2. ~~En passant needs to be coded~~
 
-3. Moves need to alternate between the colours
+3. ~~Moves need to alternate between the colours~~
 
 4. Win condition needs to be added
 
