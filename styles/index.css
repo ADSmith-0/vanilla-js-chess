@@ -71,3 +71,14 @@ queen-.w { background-image: url('/img/wq-s.png'); }
 queen-.b { background-image: url('/img/bq-s.png'); }
 king-.w { background-image: url('/img/wk-s.png'); }
 king-.b { background-image: url('/img/bk-s.png'); }
+
+.wrapper {
+    position: relative;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 1.3rem;
+    border: none;
+    cursor: pointer;
+}

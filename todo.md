@@ -4,10 +4,16 @@
 
 3. ~~Moves need to alternate between the colours~~
 
-4. Win condition needs to be added
+4. Add card to display game results
 
-5. Stalemate needs to be added
+5. Win condition needs to be added
 
-6. Add possible moves when you tap on a piece
+6. Stalemate needs to be added
 
-7. Sound needs to be added
+7. Add graveyards
+
+8. Add points
+
+9. Add possible moves when you tap on a piece
+
+9. Sound needs to be added
