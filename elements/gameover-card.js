@@ -16,8 +16,7 @@ class GameoverCard extends HTMLElement{
 
         document.getElementById("goc-close").addEventListener("click", this.hide.bind(this));
         document.getElementById("goc-rematch").addEventListener("click", () => {});
-        // this.close();
-        this.show();
+        this.hide();
     }
 
     #messageFromEnding(ending){

@@ -23,12 +23,15 @@ class Piece extends HTMLElement {
     }
     #trackCoords(e){
         const {
-            offsetLeft: pieceX,
+            offsetLeft: pieceRelativeLeft,
             offsetTop: pieceY,
             offsetWidth: pieceWidth,
-            offsetHeight: pieceHeight
+            offsetHeight: pieceHeight,
+            offsetParent: pieceParent
         } = this.#grabbedPiece;
+        const pieceX = pieceParent.offsetLeft + pieceRelativeLeft;
         const deltaX = e.clientX - (pieceX + pieceWidth / 2);
+        console.log(e.clientX, (pieceX + pieceWidth / 2));
         const deltaY = e.clientY - (pieceY + pieceHeight / 2);
         this.#grabbedPiece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
     }
