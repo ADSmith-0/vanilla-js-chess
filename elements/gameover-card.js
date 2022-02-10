@@ -14,7 +14,10 @@ class GameoverCard extends HTMLElement{
             </section>
         `;
 
-        this.close();
+        document.getElementById("goc-close").addEventListener("click", this.hide.bind(this));
+        document.getElementById("goc-rematch").addEventListener("click", () => {});
+        // this.close();
+        this.show();
     }
 
     #messageFromEnding(ending){
@@ -34,11 +37,11 @@ class GameoverCard extends HTMLElement{
         }
     }
 
-    open(){
+    show(){
         this.style.display = "block";
     }
 
-    close(){
+    hide(){
         this.style.display = "none";
     }
 }
