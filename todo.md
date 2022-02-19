@@ -4,16 +4,18 @@
 
 3. ~~Moves need to alternate between the colours~~
 
-4. Add card to display game results
+4. ~~Add card to display game results~~
 
 5. Win condition needs to be added
 
 6. Stalemate needs to be added
 
-7. Add graveyards
+7. Add pawn promotion
 
-8. Add points
+8. Add graveyards
 
-9. Add possible moves when you tap on a piece
+9. Add points
 
-9. Sound needs to be added
+10. Add possible moves when you tap on a piece
+
+11. Sound needs to be added

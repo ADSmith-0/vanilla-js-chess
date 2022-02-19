@@ -7,7 +7,6 @@ class Game {
     #gameOver = false;
 
     constructor(){
-
     }
 
     switchPlayerToMove(){

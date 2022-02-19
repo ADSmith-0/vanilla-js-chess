@@ -63,15 +63,15 @@ class Chessboard extends HTMLElement {
 
         return tile;
     }
-    #getTile(x, y){
-        const { offsetLeft:left, offsetTop:top, offsetHeight:height } = document.querySelector('chessboard-');
+    #getTileId(x, y){
+        const { offsetTop:top, offsetHeight:height, offsetParent:parent } = document.querySelector('chessboard-');
         const { offsetWidth:tileWidth, offsetHeight:tileHeight } = document.getElementById('11');
-        const file = Math.floor((x - left) / tileWidth)+1;
+        const file = Math.floor((x - parent.offsetLeft) / tileWidth)+1;
         const rank = Math.floor(((height+top) - y) / tileHeight)+1;
         return file.toString()+rank.toString();
     }
     #getTileMouseIsHoveringOver(e){
-        const id = this.#getTile(e.clientX, e.clientY);
+        const id = this.#getTileId(e.clientX, e.clientY);
         return id;
     }
     #storeStartTile(e){
