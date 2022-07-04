@@ -6,6 +6,8 @@ class Game {
 
     #gameOver = false;
 
+    #endCondition = "ds";
+
     constructor(){
     }
 
@@ -30,6 +32,27 @@ class Game {
             this.#playerToMove = this.#player1;
         }else{
             this.#playerToMove = this.#player2;
+        }
+    }
+
+    setGameOver(bool){
+        this.#gameOver = bool;
+    }
+
+    setEndCondition(endCondition){
+        this.#endCondition = endCondition;
+    }
+
+    isGameOver(){
+        return this.#gameOver;
+    }
+
+    gameEnd(){
+        if(this.isGameOver()){
+            const gameoverCard = document.querySelector('gameover-card');
+            gameoverCard.setAttribute("ending", this.#endCondition);
+            console.log(this.#endCondition);
+            gameoverCard.show();
         }
     }
 }

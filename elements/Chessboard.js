@@ -1,6 +1,7 @@
 class Chessboard extends HTMLElement {
     // replace with better implementation
     #initialState = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    // #initialState = "rnbqkbnr/3ppppp/ppp5/8/2B5/4PQ2/PPPP1PPP/RNB1K1NR w KQkq - 0 4";
     // #initialState = "rnbqkbn1/pppppppp/8/8/1b6/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
     // #initialState = "rnbqkbn1/pppppppp/8/8/3r4/8/PPPP1PPP/RNBQK2R w KQkq - 0 1";
     // #initialState = "rnbqkbnr/pppppppp/8/8/2p5/8/PP1PPPPP/RNBQKBNR b KQkq - 0 1";
@@ -92,6 +93,7 @@ class Chessboard extends HTMLElement {
             this.#setLastMove(piece.localName, piece.getColour(), startTileID, endTileID);
             this.#generateAllPsuedoLegalMoves();
             this.#updateCheck();
+            this.#checkForCheckmate();
             if(this.#inCheck[piece.getColour()]){
                 this.#flashKing();
                 piece.move(startTileID);
@@ -165,6 +167,16 @@ class Chessboard extends HTMLElement {
     #flash(tile) {
         tile.classList.add('red');
         setTimeout(() => tile.classList.remove('red'), 2100);
+    }
+    #checkForCheckmate(){
+        const opponentColour = this.getOpponentColour(this.#game.getColourToMove());
+        const opponentKing = document.querySelector(`king-.${opponentColour}`);
+        if(this.isInCheck(opponentColour) && opponentKing.getValidMoves().length == 0){
+            console.log("game over");
+            this.#game.setGameOver(true);
+            this.#game.setEndCondition(this.#game.getColourToMove() +"c");
+            this.#game.gameEnd();
+        }
     }
     #updateCastling(){
         const [blackKing, whiteKing] = document.querySelectorAll('king-');

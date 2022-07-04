@@ -2,14 +2,10 @@ class GameoverCard extends HTMLElement{
     constructor(){
         super();
 
-        const ending = this.getAttribute("ending") || "ds";
-
-        const message = this.#messageFromEnding(ending);
-
         this.innerHTML = `
             <section id="gameover-card">
                 <button id="goc-close">✖</button>
-                <h1 id="goc-message">${message}</h1>
+                <h1 id="goc-message"></h1>
                 <button id="goc-rematch" class="button">Rematch</button>
             </section>
         `;
@@ -17,6 +13,14 @@ class GameoverCard extends HTMLElement{
         document.getElementById("goc-close").addEventListener("click", this.hide.bind(this));
         document.getElementById("goc-rematch").addEventListener("click", () => {});
         this.hide();
+        this.#setMessage.bind(this);
+    }
+
+    #setMessage(){
+        const ending = this.getAttribute("ending") || "ds";
+        const message = this.#messageFromEnding(ending);
+
+        this.querySelector("h1#goc-message").innerHTML = message;
     }
 
     #messageFromEnding(ending){
@@ -37,6 +41,7 @@ class GameoverCard extends HTMLElement{
     }
 
     show(){
+        this.#setMessage();
         this.style.display = "block";
     }
 

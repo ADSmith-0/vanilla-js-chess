@@ -6,7 +6,7 @@
 
 4. ~~Add card to display game results~~
 
-5. Win condition needs to be added
+5. ~~Win condition needs to be added~~
 
 6. Stalemate needs to be added
 
