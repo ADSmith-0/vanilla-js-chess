@@ -51,7 +51,6 @@ class Game {
         if(this.isGameOver()){
             const gameoverCard = document.querySelector('gameover-card');
             gameoverCard.setAttribute("ending", this.#endCondition);
-            console.log(this.#endCondition);
             gameoverCard.show();
         }
     }
